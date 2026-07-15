@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELORA | Complete Your Verification Payment</title>
+    <title>VELORA | Complete Secure Payment</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Premium Icons -->
@@ -11,8 +11,11 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Paystack Inline JS Library -->
+    <script src="https://js.paystack.co/v2/inline.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -35,166 +38,210 @@
         }
     </script>
     <style>
-        body { background-color: #0b001a; color: #f3f4f6; }
+        body { 
+            background-color: #0b001a; 
+            color: #f3f4f6; 
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        
         .premium-card {
-            background: linear-gradient(145deg, rgba(59,0,102,0.3) 0%, rgba(26,0,51,0.5) 100%);
-            border: 1px solid rgba(157, 78, 221, 0.2);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(145deg, rgba(59,0,102,0.4) 0%, rgba(26,0,51,0.6) 100%);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.25;
+            mix-blend-mode: screen;
+            will-change: transform;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .blob-1 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #9d4edd 0%, rgba(157,78,221,0) 70%);
+            top: 10%;
+            right: -5%;
+            animation: floatOrganic 22s ease-in-out infinite alternate;
+        }
+
+        .blob-2 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #3b0066 0%, rgba(59,0,102,0) 70%);
+            bottom: 5%;
+            left: -10%;
+            animation: floatOrganic 26s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatOrganic {
+            0% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(50px, -40px) scale(1.1); }
+            100% { transform: translate(0px, 0px) scale(1); }
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Background Accents -->
-    <div class="absolute inset-0 -z-10 flex items-center justify-center opacity-20 pointer-events-none">
-        <div class="w-[500px] h-[500px] bg-velora-bright rounded-full filter blur-[150px]"></div>
+    <!-- Ambient Glow Background -->
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+
+    <!-- Content Layout Wrapper -->
+    <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
+        
+        <!-- Header -->
+        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-purple-900/20 bg-velora-darkBg/50">
+            <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
+                V<span class="text-velora-bright">e</span>lora
+            </a>
+            <div class="text-xs text-gray-400 flex items-center space-x-2">
+                <i class="fas fa-lock text-velora-gold"></i>
+                <span>SSL Encrypted Checkout</span>
+            </div>
+        </header>
+
+        <!-- Main Checkout Box -->
+        <main class="w-full max-w-lg mx-auto px-4 py-16 flex-grow flex flex-col justify-center">
+            <div class="premium-card rounded-3xl p-8 md:p-10 shadow-2xl text-center">
+                
+                <!-- Security Shield Icon -->
+                <div class="w-16 h-16 bg-velora-purple/60 border border-velora-bright/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <i class="fas fa-shield-alt text-2xl text-velora-gold"></i>
+                </div>
+
+                <h1 class="text-2xl font-extrabold text-white mb-2">Secure Verification Payment</h1>
+                <p class="text-sm text-gray-400 mb-8">Click pay below to verify your strategic earning pipeline via our secure processor.</p>
+
+                <!-- Plan Summary Display -->
+                <div class="bg-velora-darkBg/60 border border-purple-900/30 rounded-2xl p-5 mb-8 text-left space-y-3">
+                    <div class="flex justify-between items-center text-xs text-gray-400 uppercase tracking-wider">
+                        <span>Selected Strategy</span>
+                        <span>Price</span>
+                    </div>
+                    <div class="flex justify-between items-end border-b border-purple-900/20 pb-3">
+                        <span id="displayPlanName" class="text-lg font-bold text-white capitalize">---</span>
+                        <span id="displayPlanPrice" class="text-xl font-extrabold text-velora-gold">₦0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span>Associated Username:</span>
+                        <span id="displayUsername" class="font-semibold text-gray-200">---</span>
+                    </div>
+                </div>
+
+                <!-- Paystack Action Button -->
+                <button type="button" onclick="payWithPaystack()" class="w-full bg-gradient-to-r from-velora-gold to-velora-lightGold text-velora-deep font-extrabold text-base py-4 rounded-xl transition duration-200 transform active:scale-95 shadow-xl shadow-velora-gold/10 flex items-center justify-center space-x-2">
+                    <i class="fas fa-credit-card text-sm"></i>
+                    <span>Pay Now with Paystack</span>
+                </button>
+
+                <!-- Cancel Button -->
+                <div class="mt-4">
+                    <a href="register.html" class="text-xs text-gray-400 hover:text-red-400 transition">
+                        Cancel & Edit Registration Details
+                    </a>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-6 border-t border-purple-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
+            <p>&copy; 2026 VELORA Digital. Payments processed securely via Paystack.</p>
+        </footer>
+
     </div>
 
-    <!-- Minimal Header / Brand -->
-    <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-purple-900/20 bg-velora-darkBg/50 z-50">
-        <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
-            V<span class="text-velora-bright">e</span>lora
-        </a>
-        <span class="text-xs text-velora-gold font-mono flex items-center space-x-1">
-            <i class="fas fa-lock"></i> <span>Secure Checkout Gateway</span>
-        </span>
-    </header>
-
-    <!-- Main Payment Container -->
-    <main class="w-full max-w-xl mx-auto px-4 py-12 relative z-10 flex-grow flex flex-col justify-center">
-        <div class="premium-card rounded-3xl p-8 md:p-10 shadow-2xl">
-            
-            <div class="text-center mb-6">
-                <span class="px-3 py-1 rounded-full border border-velora-gold/30 bg-velora-gold/10 text-velora-gold text-xs font-bold uppercase tracking-wider mb-3 inline-block">
-                    Finalize Onboarding
-                </span>
-                <h1 class="text-3xl font-extrabold text-white tracking-tight mb-1">Verification Payment</h1>
-                <p class="text-sm text-gray-400">Complete your platform licensing transfer below to activate dashboard rewards.</p>
-            </div>
-
-            <!-- Strict OPay Restriction Alert Banner -->
-            <div class="bg-red-500/10 border-2 border-red-500/30 rounded-2xl p-4 mb-6 flex items-start space-x-3 shadow-lg shadow-red-500/5">
-                <span class="text-red-400 text-lg mt-0.5"><i class="fas fa-excurlsion-triangle fa-circle-exclamation"></i></span>
-                <div>
-                    <h4 class="text-sm font-extrabold text-red-400 uppercase tracking-wide">CRITICAL PAYMENT NOTICE</h4>
-                    <p class="text-xs text-gray-300 leading-relaxed mt-0.5">
-                        Do <strong>NOT</strong> initiate transfers from <strong>OPay Bank</strong>. OPay transfer mechanisms are strictly <strong>NOT ALLOWED</strong> on Velora due to dynamic reconciliation parameters. Please use alternatives like PalmPay, Moniepoint, Kuda, or commercial banking apps.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Strategy Selection Context Card -->
-            <div class="bg-velora-darkBg/60 border border-purple-900/40 rounded-2xl p-5 mb-6 space-y-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Account Operator:</span>
-                    <span id="displayUsername" class="text-sm font-extrabold text-white">@guest</span>
-                </div>
-                <div class="h-px bg-purple-900/40 w-full"></div>
-                <div class="flex justify-between items-center">
-                    <div>
-                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block">Assigned Licensing Track:</span>
-                        <span id="displayPlanName" class="text-base font-extrabold text-white mt-0.5">Platinum Plan</span>
-                    </div>
-                    <div class="text-right">
-                        <span id="displayPlanCost" class="text-2xl font-black text-velora-gold">₦9,000</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Vendor Settlement Details -->
-            <div class="space-y-4 mb-8">
-                <div class="text-xs font-bold uppercase tracking-wider text-gray-400">Official Settlement Destination</div>
-                
-                <div class="bg-velora-purple/20 border border-velora-bright/30 rounded-2xl p-5 relative overflow-hidden">
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Bank Name:</span>
-                            <span class="font-bold text-white tracking-wide">UBA BANK</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-400">Account Number:</span>
-                            <div class="flex items-center space-x-2">
-                                <span id="accountNum" class="font-mono font-bold text-lg text-white tracking-wider">2394786405</span>
-                                <button onclick="copyAccount()" class="text-xs text-velora-bright hover:text-velora-gold p-1 transition">
-                                    <i id="copyIcon" class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Account Name:</span>
-                            <span class="font-bold text-white">CHIDIMMA ANN IGWE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Proceed to Whatsapp Verification -->
-            <button onclick="redirectToWhatsApp()" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-black text-base py-4 rounded-xl transition duration-200 transform active:scale-95 shadow-xl shadow-green-500/10 flex items-center justify-center space-x-3">
-                <i class="fab fa-whatsapp text-xl"></i>
-                <span>Submit Proof to Coach Chi</span>
-            </button>
-            
-            <p class="text-center text-[11px] text-gray-500 mt-4 leading-normal px-2">
-                After executing your transfer, capture a clean screenshot of the transaction receipt and click the verification button above to deliver it straight to executive verification logic.
-            </p>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="py-6 border-t border-purple-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
-        <p>&copy; 2026 VELORA Digital. All Rights Reserved.</p>
-    </footer>
-
-    <!-- Verification Automation Logic -->
+    <!-- Payment Processing and Redirection Scripts -->
     <script>
-        let globalPlan = "platinum";
-        let globalUser = "User";
+        // Setup Coach CHI's WhatsApp contact variables
+        const COACH_PHONE = "2349132107409"; // Replace with Coach CHI's actual WhatsApp phone number with country code
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const plan = params.get('plan') || 'platinum';
-            const user = params.get('user') || 'Member';
+        // Retrieve registration variables from register.html
+        const params = new URLSearchParams(window.location.search);
+        const plan = params.get('plan') || '';
+        const username = params.get('user') || 'User';
 
-            globalPlan = plan;
-            globalUser = user;
+        let amountInKobo = 0; // Paystack processes payments strictly in kobo
+        let rawPriceString = "";
+        let finalPlanName = "";
 
-            // Interface Updates Based on Parameters
-            document.getElementById('displayUsername').innerText = `@${user}`;
-            
-            if (plan.toLowerCase() === 'gold') {
-                document.getElementById('displayPlanName').innerText = "Gold Plan Track (Tier II)";
-                document.getElementById('displayPlanCost').innerText = "₦14,500";
-            } else {
-                document.getElementById('displayPlanName').innerText = "Platinum Plan Track (Tier I)";
-                document.getElementById('displayPlanCost').innerText = "₦9,000";
-            }
-        });
-
-        function copyAccount() {
-            const num = document.getElementById('accountNum').innerText;
-            navigator.clipboard.writeText(num).then(() => {
-                const icon = document.getElementById('copyIcon');
-                icon.className = "fas fa-check text-green-400";
-                setTimeout(() => {
-                    icon.className = "fas fa-copy";
-                }, 2000);
-            });
+        // Dynamically compute the costs based on selected plan
+        if (plan.toLowerCase() === 'platinum') {
+            finalPlanName = "Platinum Plan";
+            rawPriceString = "₦9,000 / $4.50";
+            amountInKobo = 9000 * 100; // 9,000 Naira in kobo
+        } else if (plan.toLowerCase() === 'gold') {
+            finalPlanName = "Gold Plan";
+            rawPriceString = "₦14,500 / $7.25";
+            amountInKobo = 14500 * 100; // 14,500 Naira in kobo
+        } else {
+            // Fallback default
+            finalPlanName = "Unselected Plan";
+            rawPriceString = "₦0.00";
+            amountInKobo = 0;
         }
 
-        function redirectToWhatsApp() {
-            const phoneNumber = "2347052554105"; // Coach Chi Clean String Format
-            const targetAmount = (globalPlan.toLowerCase() === 'gold') ? "₦14,500" : "₦9,000";
-            
-            // Premium structured message templates to hand directly to Coach Chi
-            const textMessage = `Hello Coach Chi, I have successfully executed my verification transfer for VELORA.\n\n` +
-                                `*Username:* @${globalUser}\n` +
-                                `*Selected Track:* ${globalPlan.toUpperCase()}\n` +
-                                `*Amount Sent:* ${targetAmount}\n\n` +
-                                `Attached below is my authentic transaction proof. Please confirm my verification credentials immediately.`;
+        // Print computed context values onto the checkout window UI
+        document.getElementById('displayPlanName').innerText = finalPlanName;
+        document.getElementById('displayPlanPrice').innerText = rawPriceString.split(" / ")[0]; // Displays the NGN price
+        document.getElementById('displayUsername').innerText = username;
 
-            const cleanUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`;
-            window.location.href = cleanUrl;
+        // Trigger Paystack inline checkout popup
+        function payWithPaystack() {
+            if (amountInKobo === 0) {
+                alert("Error resolving pricing setup. Please go back to register first.");
+                return;
+            }
+
+            const paystack = new PaystackPop();
+            paystack.newTransaction({
+                key: 'pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXX', // <--- IMPORTANT: Replace this with your Live/Test Public Key from your Paystack Dashboard settings
+                email: 'payments@veloradigital.com', // Set checkout email or dynamic value if preferred
+                amount: amountInKobo,
+                currency: 'NGN',
+                metadata: {
+                    custom_fields: [
+                        {
+                            display_name: "Platform Username",
+                            variable_name: "username",
+                            value: username
+                        },
+                        {
+                            display_name: "Selected Plan",
+                            variable_name: "selected_plan",
+                            value: finalPlanName
+                        }
+                    ]
+                },
+                onSuccess: function(transaction) {
+                    // Payment was successful. Construct the confirmation redirect string
+                    const reference = transaction.reference;
+                    const messageText = `Hello Coach CHI 👋\n\nI just successfully completed my payment on VELORA! 🎉\n\n🔹 *Username:* ${username}\n🔹 *Plan:* ${finalPlanName}\n🔹 *Paystack Ref:* ${reference}\n\nAttached below is my payment receipt. Please verify and guide me!`;
+                    
+                    const encodedMessage = encodeURIComponent(messageText);
+                    const whatsappRedirectUrl = `https://wa.me/${COACH_PHONE}?text=${encodedMessage}`;
+
+                    // Smooth transition into WhatsApp redirection window
+                    alert("Payment Verified Successfully! Directing you to Coach CHI to submit proof of payment.");
+                    window.location.href = whatsappRedirectUrl;
+                },
+                onCancel: function() {
+                    alert("Payment cancelled. Please complete payment to activate your account.");
+                },
+                onError: function(error) {
+                    alert("Checkout Error: " + error.message);
+                }
+            });
         }
     </script>
 </body>
