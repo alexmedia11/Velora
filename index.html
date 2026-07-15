@@ -38,8 +38,10 @@
             margin: 0;
             overflow-x: hidden;
         }
-        
-        /* 3D WebGL Canvas Layer fixed behind content */
+
+        /* --------------------------------------------------
+           1. Core Layout & WebGL Layering
+           -------------------------------------------------- */
         #webgl-canvas {
             position: fixed;
             top: 0;
@@ -47,7 +49,13 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            pointer-events: none; /* Allows user to click buttons on the UI */
+            pointer-events: none;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
         }
 
         .gold-gradient-text {
@@ -55,28 +63,171 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .premium-card {
             background: linear-gradient(145deg, rgba(59,0,102,0.4) 0%, rgba(26,0,51,0.6) 100%);
             border: 1px solid rgba(157, 78, 221, 0.25);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .premium-card:hover {
-            border-color: rgba(255, 183, 3, 0.4);
-            transform: translateY(-4px);
+            border-color: rgba(255, 183, 3, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -15px rgba(157, 78, 221, 0.15);
+        }
+
+        /* --------------------------------------------------
+           2. Ambient CSS Floating & Rotation Engine
+           -------------------------------------------------- */
+        .premium-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Ambient floating glowing blobs */
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.35;
+            mix-blend-mode: screen;
+            will-change: transform;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #3b0066 0%, rgba(59,0,102,0) 70%);
+            top: -5%;
+            right: 5%;
+            animation: floatOrganic 22s ease-in-out infinite alternate;
+        }
+
+        .blob-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #9d4edd 0%, rgba(157,78,221,0) 70%);
+            bottom: 15%;
+            left: -10%;
+            animation: floatOrganic 28s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatOrganic {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(60px, -50px) scale(1.15); }
+            66% { transform: translate(-40px, 40px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* Rotating geometric accents */
+        .rotating-accent {
+            position: absolute;
+            will-change: transform;
+            opacity: 0.25;
+        }
+
+        /* Slow-spinning thin dashed ring */
+        .accent-circle-1 {
+            width: 350px;
+            height: 350px;
+            top: 12%;
+            right: 12%;
+            animation: spinSlow 70s linear infinite;
+        }
+
+        .accent-circle-2 {
+            width: 280px;
+            height: 280px;
+            bottom: 30%;
+            left: 8%;
+            animation: spinSlow 50s linear infinite reverse;
+        }
+
+        /* Glowing floating sparkle */
+        .accent-sparkle {
+            width: 48px;
+            height: 48px;
+            top: 25%;
+            left: 15%;
+            animation: spinAndFloat 14s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        .accent-sparkle-gold {
+            width: 36px;
+            height: 36px;
+            bottom: 20%;
+            right: 15%;
+            animation: spinAndFloat 18s ease-in-out infinite alternate;
+            opacity: 0.5;
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinAndFloat {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-25px) rotate(180deg) scale(1.15); }
+            100% { transform: translateY(0px) rotate(360deg) scale(1); }
         }
     </style>
 </head>
 <body class="font-sans antialiased">
 
-    <!-- Live 3D WebGL Background -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- Foreground Content Wrapper -->
-    <div class="relative z-10 w-full">
+    <div class="premium-bg-container">
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+        
+        <div class="rotating-accent accent-circle-1">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="48" stroke="rgba(157, 78, 221, 0.3)" stroke-width="0.75" stroke-dasharray="3 4" />
+            </svg>
+        </div>
+        <div class="rotating-accent accent-circle-2">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="48" stroke="rgba(255, 183, 3, 0.25)" stroke-width="0.75" stroke-dasharray="4 4" />
+            </svg>
+        </div>
 
-        <!-- Navigation -->
+        <div class="rotating-accent accent-sparkle">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L15 9L24 12L15 15L12 24L9 15L0 12L9 9L12 0Z" fill="url(#purpleGrad)"/>
+                <defs>
+                    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#9d4edd" />
+                        <stop offset="100%" stop-color="#3b0066" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        
+        <div class="rotating-accent accent-sparkle-gold">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L15 9L24 12L15 15L12 24L9 15L0 12L9 9L12 0Z" fill="url(#goldGrad)"/>
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffb703" />
+                        <stop offset="100%" stop-color="#ffdd6b" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </div>
+
+    <div class="content-layer">
+
         <nav class="sticky top-0 z-50 premium-card border-b border-purple-900/40 bg-velora-darkBg/80 py-4 px-6 md:px-12 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl font-extrabold tracking-wider text-white flex items-center">
@@ -96,7 +247,6 @@
             </div>
         </nav>
 
-        <!-- Header -->
         <header class="relative pt-16 pb-20 px-6 md:px-12 max-w-7xl mx-auto text-center flex flex-col items-center">
             <div class="absolute inset-0 -z-10 flex items-center justify-center opacity-30">
                 <div class="w-96 h-96 bg-velora-bright rounded-full filter blur-[120px]"></div>
@@ -124,15 +274,14 @@
                 </a>
             </div>
 
-            <div class="w-full max-w-4xl mt-4 rounded-2xl overflow-hidden border border-velora-bright/30 shadow-2xl shadow-velora-bright/10">
+            <div class="w-full max-w-4xl mt-4 rounded-2xl overflow-hidden border border-velora-bright/30 shadow-2xl shadow-velora-bright/10 bg-velora-deep/30">
                 <img src="velora1.jpg" alt="Velora AI Showcase" class="w-full h-auto object-cover opacity-90">
             </div>
         </header>
 
-        <!-- Features -->
         <section class="py-16 px-6 md:px-12 max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="rounded-3xl overflow-hidden border border-purple-900/40 shadow-xl">
+                <div class="rounded-3xl overflow-hidden border border-purple-900/40 shadow-xl bg-velora-deep/30">
                     <img src="velora2.jpg" alt="About Velora AI Ecosystem" class="w-full h-auto object-cover">
                 </div>
                 <div class="space-y-6">
@@ -145,7 +294,6 @@
             </div>
         </section>
 
-        <!-- WhatsApp Status Section -->
         <section class="py-16 px-6 md:px-12 max-w-6xl mx-auto">
             <div class="premium-card rounded-3xl p-8 md:p-12 border border-velora-bright/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-12">
                 <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-green-500/10 rounded-full filter blur-3xl"></div>
@@ -204,7 +352,6 @@
             </div>
         </section>
 
-        <!-- Media Portals -->
         <section class="py-12 px-6 md:px-12 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="premium-card rounded-3xl overflow-hidden p-6 space-y-6 flex flex-col justify-between">
                 <div class="space-y-4">
@@ -227,10 +374,9 @@
             </div>
         </section>
 
-        <!-- YouTube Section -->
         <section class="py-12 px-6 md:px-12 max-w-6xl mx-auto">
             <div class="premium-card rounded-3xl p-8 border border-red-500/20 flex flex-col md:flex-row items-center gap-8">
-                <div class="w-full md:w-1/3 rounded-2xl overflow-hidden border border-red-500/30 shadow-xl">
+                <div class="w-full md:w-1/3 rounded-2xl overflow-hidden border border-red-500/30 shadow-xl bg-velora-deep/30">
                     <img src="velora5.jpg" alt="YouTube Monetization" class="w-full h-auto object-cover">
                 </div>
                 <div class="w-full md:w-2/3 space-y-4">
@@ -246,15 +392,13 @@
             </div>
         </section>
 
-        <!-- Plans Section -->
-        <section id="plans" class="py-20 bg-velora-deep/10 border-y border-purple-900/30 px-6 md:px-12">
+        <section id="plans" class="py-20 bg-velora-deep/20 border-y border-purple-900/30 px-6 md:px-12">
             <div class="max-w-6xl mx-auto text-center">
                 <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Choose Your Strategy</h2>
                 <p class="text-gray-400 max-w-xl mx-auto mb-10 font-light">Select the subscription model that mirrors your financial targets. You can enroll in exactly one plan.</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left items-stretch">
                     
-                    <!-- Platinum Plan -->
                     <div class="premium-card rounded-3xl p-8 relative flex flex-col justify-between border border-velora-bright/30 bg-velora-purple/10">
                         <div>
                             <div class="flex justify-between items-start mb-6">
@@ -297,7 +441,6 @@
                         </div>
                     </div>
                     
-                    <!-- Gold Plan -->
                     <div class="premium-card rounded-3xl p-8 relative flex flex-col justify-between border-2 border-velora-gold bg-gradient-to-b from-velora-gold/10 to-transparent shadow-xl shadow-velora-gold/5">
                         <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-velora-gold text-velora-deep font-black text-xs uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
                             🔥 Maximum Returns
@@ -347,7 +490,6 @@
             </div>
         </section>
 
-        <!-- FAQs -->
         <section class="py-20 max-w-4xl mx-auto px-6">
             <h2 class="text-3xl md:text-5xl font-extrabold text-center mb-4">Frequently Asked Questions</h2>
             <p class="text-gray-400 text-center mb-12 font-light">Clear answers to everything you need to know about starting your VELORA journey cleanly.</p>
@@ -380,7 +522,6 @@
             </div>
         </section>
 
-        <!-- CTA Section -->
         <section class="py-20 px-6 text-center max-w-4xl mx-auto relative">
             <div class="bg-gradient-to-r from-velora-purple/40 to-velora-deep/60 border border-velora-bright/30 rounded-3xl p-10 md:p-16 space-y-6">
                 <h2 class="text-3xl md:text-5xl font-black text-white">Ready to Secure Your Access?</h2>
@@ -395,19 +536,15 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="py-8 border-t border-purple-900/20 text-center text-xs text-gray-500">
             <p>&copy; 2026 VELORA Digital. All Rights Reserved.</p>
         </footer>
 
     </div>
 
-    <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <!-- Custom WebGL 3D Logic & Original Page Functions -->
     <script>
-        // --- original page interaction handlers ---
+        // --- Original Content Functionality ---
         function toggleCurrency(currency) {
             const currencyVals = document.querySelectorAll('.currency-val');
             const planPrices = document.querySelectorAll('.plan-price');
@@ -444,9 +581,9 @@
             }
         }
 
-        // --- Live 3D WebGL Constellation background logic ---
+        // --- Live 3D WebGL Constellation System ---
         let scene, camera, renderer, particleSystem;
-        const particlesCount = 800;
+        const particlesCount = 1000;
         const positions = new Float32Array(particlesCount * 3);
         const colors = new Float32Array(particlesCount * 3);
 
@@ -458,34 +595,27 @@
         function init3D() {
             const canvas = document.getElementById('webgl-canvas');
             
-            // Setup scene & dark violet fog to integrate perfectly with the background theme
             scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x0b001a, 0.12);
+            scene.fog = new THREE.FogExp2(0x0b001a, 0.1);
 
-            // Setup Camera
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 15);
             camera.position.z = 6;
 
-            // Generate particles
             const geometry = new THREE.BufferGeometry();
-            
-            // Velora Theme Color Palettes (Rich Purple & Warm Bright Gold)
             const goldColor = new THREE.Color('#ffb703');
             const purpleColor = new THREE.Color('#9d4edd');
 
             for (let i = 0; i < particlesCount; i++) {
-                // Sphere-like organic network cloud
                 const u = Math.random();
                 const v = Math.random();
                 const theta = u * 2.0 * Math.PI;
                 const phi = Math.acos(2.0 * v - 1.0);
-                const r = 2.5 + Math.random() * 2.0;
+                const r = 2.5 + Math.random() * 2.5;
 
                 positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
                 positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
                 positions[i * 3 + 2] = r * Math.cos(phi);
 
-                // Blend randomly between gold and deep purple particles
                 const mixFactor = Math.random();
                 const blendedColor = goldColor.clone().lerp(purpleColor, mixFactor);
                 
@@ -497,12 +627,11 @@
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-            // Procedural glowing particle dot
             const pMaterial = new THREE.PointsMaterial({
-                size: 0.045,
+                size: 0.05,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.75,
+                opacity: 0.8,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
                 map: createParticleTexture()
@@ -511,12 +640,10 @@
             particleSystem = new THREE.Points(geometry, pMaterial);
             scene.add(particleSystem);
 
-            // Renderer setup
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Event bindings
             document.addEventListener('mousemove', onMouseMove);
             window.addEventListener('scroll', onScroll);
             window.addEventListener('resize', onResize);
@@ -531,7 +658,7 @@
             const ctx = canvas.getContext('2d');
             const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
             grad.addColorStop(0, 'rgba(255,255,255,1)');
-            grad.addColorStop(0.4, 'rgba(255,240,200,0.5)');
+            grad.addColorStop(0.4, 'rgba(255,240,200,0.6)');
             grad.addColorStop(1, 'rgba(0,0,0,0)');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 16, 16);
@@ -542,16 +669,14 @@
         }
 
         function onMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX) / 150;
-            mouseY = (event.clientY - windowHalfY) / 150;
+            mouseX = (event.clientX - windowHalfX) / 120;
+            mouseY = (event.clientY - windowHalfY) / 120;
         }
 
         function onScroll() {
             const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            // Move camera dynamically outward on scroll to reveal broader depth
-            camera.position.z = 6 + (scrollPercent * 4);
-            // Spin network slightly with scroll direction
-            particleSystem.rotation.z = scrollPercent * 0.5;
+            camera.position.z = 6 + (scrollPercent * 3.5);
+            particleSystem.rotation.z = scrollPercent * 0.4;
         }
 
         function onResize() {
@@ -565,25 +690,21 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Smooth parallax transitions
             targetX += (mouseX - targetX) * 0.05;
             targetY += (mouseY - targetY) * 0.05;
 
-            // Base idle spin
-            particleSystem.rotation.y += 0.001;
-            particleSystem.rotation.x += 0.0005;
+            particleSystem.rotation.y += 0.0012;
+            particleSystem.rotation.x += 0.0006;
 
-            // Interactive coordinate adjustments
-            particleSystem.rotation.y += targetX * 0.02;
-            particleSystem.rotation.x += targetY * 0.02;
+            particleSystem.rotation.y += targetX * 0.015;
+            particleSystem.rotation.x += targetY * 0.015;
 
             renderer.render(scene, camera);
         }
 
-        // Run both systems together cleanly
         window.onload = () => {
             init3D();
         };
     </script>
 </body>
-</html>
+                                </html>
