@@ -4,16 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VELORA | Complete Secure Payment</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Paystack Inline JS Library -->
     <script src="https://js.paystack.co/v2/inline.js"></script>
 
     <script>
@@ -92,14 +88,11 @@
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Ambient Glow Background -->
     <div class="glow-blob blob-1"></div>
     <div class="glow-blob blob-2"></div>
 
-    <!-- Content Layout Wrapper -->
     <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
         
-        <!-- Header -->
         <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-purple-900/20 bg-velora-darkBg/50">
             <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
                 V<span class="text-velora-bright">e</span>lora
@@ -110,11 +103,9 @@
             </div>
         </header>
 
-        <!-- Main Checkout Box -->
         <main class="w-full max-w-lg mx-auto px-4 py-16 flex-grow flex flex-col justify-center">
             <div class="premium-card rounded-3xl p-8 md:p-10 shadow-2xl text-center">
                 
-                <!-- Security Shield Icon -->
                 <div class="w-16 h-16 bg-velora-purple/60 border border-velora-bright/30 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
                     <i class="fas fa-shield-alt text-2xl text-velora-gold"></i>
                 </div>
@@ -122,7 +113,6 @@
                 <h1 class="text-2xl font-extrabold text-white mb-2">Secure Verification Payment</h1>
                 <p class="text-sm text-gray-400 mb-8">Click pay below to verify your strategic earning pipeline via our secure processor.</p>
 
-                <!-- Plan Summary Display -->
                 <div class="bg-velora-darkBg/60 border border-purple-900/30 rounded-2xl p-5 mb-8 text-left space-y-3">
                     <div class="flex justify-between items-center text-xs text-gray-400 uppercase tracking-wider">
                         <span>Selected Strategy</span>
@@ -138,13 +128,11 @@
                     </div>
                 </div>
 
-                <!-- Paystack Action Button -->
                 <button type="button" onclick="payWithPaystack()" class="w-full bg-gradient-to-r from-velora-gold to-velora-lightGold text-velora-deep font-extrabold text-base py-4 rounded-xl transition duration-200 transform active:scale-95 shadow-xl shadow-velora-gold/10 flex items-center justify-center space-x-2">
                     <i class="fas fa-credit-card text-sm"></i>
                     <span>Pay Now with Paystack</span>
                 </button>
 
-                <!-- Cancel Button -->
                 <div class="mt-4">
                     <a href="register.html" class="text-xs text-gray-400 hover:text-red-400 transition">
                         Cancel & Edit Registration Details
@@ -154,59 +142,58 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="py-6 border-t border-purple-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
             <p>&copy; 2026 VELORA Digital. Payments processed securely via Paystack.</p>
         </footer>
 
     </div>
 
-    <!-- Payment Processing and Redirection Scripts -->
     <script>
-        // Setup Coach CHI's WhatsApp contact variables
-        const COACH_PHONE = "2349132107409"; // Replace with Coach CHI's actual WhatsApp phone number with country code
+        // Coach CHI's WhatsApp contact number (international format without '+' or spaces)
+        const COACH_PHONE = "2349132107409"; 
 
-        // Retrieve registration variables from register.html
+        // Retrieve registration variables from URL params sent by register.html
         const params = new URLSearchParams(window.location.search);
         const plan = params.get('plan') || '';
         const username = params.get('user') || 'User';
 
-        let amountInKobo = 0; // Paystack processes payments strictly in kobo
+        let amountInKobo = 0; 
         let rawPriceString = "";
         let finalPlanName = "";
 
-        // Dynamically compute the costs based on selected plan
+        // Dynamically set price configurations based on the selected registration plan
         if (plan.toLowerCase() === 'platinum') {
             finalPlanName = "Platinum Plan";
             rawPriceString = "₦9,000 / $4.50";
-            amountInKobo = 9000 * 100; // 9,000 Naira in kobo
+            amountInKobo = 9000 * 100; // ₦9,000 in Kobo
         } else if (plan.toLowerCase() === 'gold') {
             finalPlanName = "Gold Plan";
             rawPriceString = "₦14,500 / $7.25";
-            amountInKobo = 14500 * 100; // 14,500 Naira in kobo
+            amountInKobo = 14500 * 100; // ₦14,500 in Kobo
         } else {
-            // Fallback default
             finalPlanName = "Unselected Plan";
             rawPriceString = "₦0.00";
             amountInKobo = 0;
         }
 
-        // Print computed context values onto the checkout window UI
+        // Render checkout screen details dynamically
         document.getElementById('displayPlanName').innerText = finalPlanName;
-        document.getElementById('displayPlanPrice').innerText = rawPriceString.split(" / ")[0]; // Displays the NGN price
+        document.getElementById('displayPlanPrice').innerText = rawPriceString.split(" / ")[0]; 
         document.getElementById('displayUsername').innerText = username;
 
-        // Trigger Paystack inline checkout popup
+        // Fire the Paystack SDK Checkout Popup
         function payWithPaystack() {
             if (amountInKobo === 0) {
-                alert("Error resolving pricing setup. Please go back to register first.");
+                alert("Please select your strategy plan from the registration page first.");
+                window.location.href = "register.html";
                 return;
             }
 
             const paystack = new PaystackPop();
             paystack.newTransaction({
-                key: 'pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXX', // <--- IMPORTANT: Replace this with your Live/Test Public Key from your Paystack Dashboard settings
-                email: 'payments@veloradigital.com', // Set checkout email or dynamic value if preferred
+                // Loaded directly with your live public key
+                key: 'pk_live_8b224c134d4236b808b2d779e4a5dd9d33c7adc2', 
+                email: 'payments@veloradigital.com', 
                 amount: amountInKobo,
                 currency: 'NGN',
                 metadata: {
@@ -224,19 +211,21 @@
                     ]
                 },
                 onSuccess: function(transaction) {
-                    // Payment was successful. Construct the confirmation redirect string
+                    // Grab success ID to prevent manual receipt tampering
                     const reference = transaction.reference;
+                    
+                    // Build customized chat message for Coach CHI
                     const messageText = `Hello Coach CHI 👋\n\nI just successfully completed my payment on VELORA! 🎉\n\n🔹 *Username:* ${username}\n🔹 *Plan:* ${finalPlanName}\n🔹 *Paystack Ref:* ${reference}\n\nAttached below is my payment receipt. Please verify and guide me!`;
                     
                     const encodedMessage = encodeURIComponent(messageText);
                     const whatsappRedirectUrl = `https://wa.me/${COACH_PHONE}?text=${encodedMessage}`;
 
-                    // Smooth transition into WhatsApp redirection window
-                    alert("Payment Verified Successfully! Directing you to Coach CHI to submit proof of payment.");
+                    // Show visual success state before sending them off to WhatsApp
+                    alert("Payment Verified Successfully! Directing you to Coach CHI to submit your receipt proof.");
                     window.location.href = whatsappRedirectUrl;
                 },
                 onCancel: function() {
-                    alert("Payment cancelled. Please complete payment to activate your account.");
+                    alert("Payment cancelled. Please complete payment to activate your strategy account.");
                 },
                 onError: function(error) {
                     alert("Checkout Error: " + error.message);
