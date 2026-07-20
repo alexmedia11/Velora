@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELORA | Create Your Earning Account</title>
+    <title>VELORA | Initialize Account Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         velora: {
-                            deep: '#1a0033',
-                            purple: '#3b0066',
-                            bright: '#9d4edd',
-                            gold: '#ffb703',
-                            lightGold: '#ffdd6b',
-                            darkBg: '#0b001a'
+                            bgCream: '#FDFBF7',
+                            navyDeep: '#0A1128',
+                            navyText: '#1C2541',
+                            purpleAccent: '#4A148C',
+                            purpleHover: '#320B61',
+                            mutedGray: '#6C757D'
                         }
                     }
                 }
@@ -32,267 +29,97 @@
         }
     </script>
     <style>
-        body { 
-            background-color: #0b001a; 
-            color: #f3f4f6; 
-            margin: 0;
-            overflow-x: hidden;
-            position: relative;
-            min-h-screen: 100vh;
-        }
-        
-        .premium-card {
-            background: linear-gradient(145deg, rgba(59,0,102,0.4) 0%, rgba(26,0,51,0.6) 100%);
-            border: 1px solid rgba(157, 78, 221, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        input, select {
-            background-color: rgba(11, 0, 26, 0.7) !important;
-            border: 1px solid rgba(157, 78, 221, 0.3) !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        input:focus, select:focus {
-            border-color: #ffb703 !important;
-            box-shadow: 0 0 14px rgba(255, 183, 3, 0.25);
-            outline: none;
-        }
-
-        /* --------------------------------------------------
-           Ambient Floating & Rotation Effects (Premium Look)
-           -------------------------------------------------- */
-        .premium-bg-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .glow-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.25;
-            mix-blend-mode: screen;
-            will-change: transform;
-        }
-
-        .blob-1 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, #9d4edd 0%, rgba(157,78,221,0) 70%);
-            top: 10%;
-            right: -5%;
-            animation: floatOrganic 22s ease-in-out infinite alternate;
-        }
-
-        .blob-2 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, #3b0066 0%, rgba(59,0,102,0) 70%);
-            bottom: 5%;
-            left: -10%;
-            animation: floatOrganic 26s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes floatOrganic {
-            0% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(50px, -40px) scale(1.1); }
-            100% { transform: translate(0px, 0px) scale(1); }
-        }
-
-        .rotating-accent {
-            position: absolute;
-            will-change: transform;
-            opacity: 0.3;
-        }
-
-        .accent-sparkle {
-            width: 40px;
-            height: 40px;
-            top: 15%;
-            left: 10%;
-            animation: spinAndFloat 16s ease-in-out infinite;
-        }
-
-        @keyframes spinAndFloat {
-            0% { transform: translateY(0px) rotate(0deg) scale(1); }
-            50% { transform: translateY(-20px) rotate(180deg) scale(1.1); }
-            100% { transform: translateY(0px) rotate(360deg) scale(1); }
+        body { background-color: #FDFBF7; color: #1C2541; }
+        .luxury-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(74, 20, 140, 0.08);
+            box-shadow: 0 20px 40px rgba(10, 17, 40, 0.04);
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-velora-bgCream">
 
-    <div class="premium-bg-container">
-        <div class="glow-blob blob-1"></div>
-        <div class="glow-blob blob-2"></div>
-        <div class="rotating-accent accent-sparkle">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 0L15 9L24 12L15 15L12 24L9 15L0 12L9 9L12 0Z" fill="url(#goldGrad)"/>
-                <defs>
-                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ffb703" />
-                        <stop offset="100%" stop-color="#ffdd6b" />
-                    </linearGradient>
-                </defs>
-            </svg>
-        </div>
-    </div>
+    <!-- Header Navigation -->
+    <header class="w-full py-6 px-6 border-b border-purple-900/10 bg-white/60 backdrop-blur-md flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-extrabold text-velora-navyDeep tracking-tight">V<span class="text-velora-purpleAccent">e</span>lora</a>
+        <a href="index.html" class="text-xs font-semibold text-velora-mutedGray hover:text-velora-purpleAccent transition flex items-center gap-1.5">
+            <i class="fas fa-arrow-left text-[10px]"></i> Back to Landing
+        </a>
+    </header>
 
-    <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
-        
-        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-purple-900/20 bg-velora-darkBg/50">
-            <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
-                V<span class="text-velora-bright">e</span>lora
-            </a>
-            <a href="index.html" class="text-xs text-gray-400 hover:text-velora-gold transition flex items-center space-x-1">
-                <i class="fas fa-arrow-left"></i> <span>Back to Home</span>
-            </a>
-        </header>
+    <!-- Main Registration Section -->
+    <main class="w-full max-w-md mx-auto px-4 py-12 flex-grow flex flex-col justify-center">
+        <div class="luxury-card rounded-3xl p-8">
+            <h1 class="text-2xl font-extrabold text-velora-navyDeep mb-2 tracking-tight">Set Up Your Profile</h1>
+            <p class="text-xs text-velora-mutedGray mb-6 leading-relaxed">Fill out your profile details below to customize your experience and activate your account parameters.</p>
 
-        <main class="w-full max-w-xl mx-auto px-4 py-12 flex-grow flex flex-col justify-center">
-            <div class="premium-card rounded-3xl p-8 md:p-10 shadow-2xl">
-                
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">Create Account</h1>
-                    <p class="text-sm text-gray-400">Fill in your information accurately to lock in your system access.</p>
+            <form id="registrationForm" onsubmit="handleRegistration(event)" class="space-y-5">
+                <!-- Username Input -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Username</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs"></i>
+                        <input type="text" id="username" required placeholder="Choose a unique username" class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-4 text-sm text-velora-navyDeep placeholder-velora-mutedGray/50 focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent transition">
+                    </div>
                 </div>
 
-                <form id="registrationForm" onsubmit="handleRegistration(event)" class="space-y-5">
-
-                    <div>
-                        <label for="fullName" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Full Name</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-user-circle"></i></span>
-                            <input type="text" id="fullName" required class="w-full pl-10 pr-4 py-3 rounded-xl text-white text-sm" placeholder="John Doe">
-                        </div>
+                <!-- Email Input -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Email Address</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs"></i>
+                        <input type="email" id="email" required placeholder="example@gmail.com" class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-4 text-sm text-velora-navyDeep placeholder-velora-mutedGray/50 focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent transition">
                     </div>
+                </div>
 
-                    <div>
-                        <label for="username" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Username</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-at"></i></span>
-                            <input type="text" id="username" required class="w-full pl-10 pr-4 py-3 rounded-xl text-white text-sm" placeholder="johndoe12">
-                        </div>
+                <!-- Plan Dropdown Selection -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Select Membership Tier</label>
+                    <div class="relative">
+                        <i class="fas fa-layer-group absolute left-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs"></i>
+                        <select id="tierPlan" required class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-10 text-sm text-velora-navyDeep focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent appearance-none transition cursor-pointer">
+                            <option value="platinum">Velora Platinum Plan — ₦9,000</option>
+                            <option value="gold">Velora Gold Plan — ₦14,500</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs pointer-events-none"></i>
                     </div>
+                </div>
 
-                    <div>
-                        <label for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Email Address</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-envelope"></i></span>
-                            <input type="email" id="email" required class="w-full pl-10 pr-4 py-3 rounded-xl text-white text-sm" placeholder="name@domain.com">
-                        </div>
-                    </div>
+                <!-- Form Submit Action Button (Fixed type="submit") -->
+                <button type="submit" class="w-full mt-2 bg-velora-purpleAccent hover:bg-velora-purpleHover text-white font-extrabold py-3.5 rounded-xl transition transform active:scale-[0.98] shadow-xl shadow-velora-purpleAccent/10 flex justify-center items-center gap-2">
+                    Proceed to Secure Payment <i class="fas fa-lock text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </main>
 
-                    <div>
-                        <label for="phone" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Phone Number</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-phone-alt"></i></span>
-                            <input type="tel" id="phone" required class="w-full pl-10 pr-4 py-3 rounded-xl text-white text-sm" placeholder="08012345678">
-                        </div>
-                    </div>
+    <!-- Footer Security Banner -->
+    <footer class="py-6 text-center text-[10px] text-velora-mutedGray border-t border-purple-900/5 bg-white/40">
+        <p class="flex justify-center items-center gap-1.5">
+            <i class="fas fa-shield-alt text-velora-mutedGray/80"></i> Data stored securely under protected local session protocols.
+        </p>
+    </footer>
 
-                    <div>
-                        <label for="selectedPlan" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Select Strategy Plan</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-gem"></i></span>
-                            <select id="selectedPlan" required class="w-full pl-10 pr-10 py-3 rounded-xl text-white text-sm appearance-none cursor-pointer">
-                                <option value="" disabled selected>-- Select your Plan --</option>
-                                <option value="platinum">Platinum Plan — ₦9,000 / $4.50</option>
-                                <option value="gold">Gold Plan — ₦14,500 / $7.25</option>
-                            </select>
-                            <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 pointer-events-none">
-                                <i class="fas fa-chevron-down text-xs"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="password" class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Security Password</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500"><i class="fas fa-lock"></i></span>
-                            <input type="password" id="password" required class="w-full pl-10 pr-12 py-3 rounded-xl text-white text-sm" placeholder="••••••••">
-                            <button type="button" onclick="togglePassVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-500 hover:text-velora-bright transition">
-                                <i id="eyeIcon" class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start pt-1">
-                        <input id="terms" type="checkbox" required class="w-4 h-4 mt-0.5 rounded border-purple-900 bg-velora-darkBg text-velora-bright focus:ring-velora-gold focus:ring-offset-0 cursor-pointer">
-                        <label for="terms" class="ml-2 text-xs text-gray-400 leading-normal">
-                            I confirm that the fields provided above match my actual operational credentials and data assets perfectly.
-                        </label>
-                    </div>
-
-                    <button type="submit" class="w-full bg-gradient-to-r from-velora-gold to-velora-lightGold text-velora-deep font-extrabold text-base py-4 rounded-xl transition duration-200 transform active:scale-95 shadow-xl shadow-velora-gold/10 flex items-center justify-center space-x-2 mt-2">
-                        <span>Proceed to Verification Payment</span>
-                        <i class="fas fa-arrow-right text-sm"></i>
-                    </button>
-                </form>
-
-            </div>
-        </main>
-
-        <footer class="py-6 border-t border-purple-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
-            <p>&copy; 2026 VELORA Digital. All Rights Reserved.</p>
-        </footer>
-
-    </div>
-
+    <!-- JavaScript Data Vectors -->
     <script>
-        // Check URL parameters on load to auto-select correct plan in dropdown
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const initialPlan = params.get('plan');
-            const selectDropdown = document.getElementById('selectedPlan');
-            
-            if (initialPlan === 'gold') {
-                selectDropdown.value = 'gold';
-            } else if (initialPlan === 'platinum') {
-                selectDropdown.value = 'platinum';
-            } else {
-                // Keep option disabled so user is forced to select before proceeding
-                selectDropdown.value = '';
+            const planParam = params.get('plan');
+            if(planParam) {
+                const selectElement = document.getElementById('tierPlan');
+                if(planParam.toLowerCase() === 'gold') selectElement.value = 'gold';
+                if(planParam.toLowerCase() === 'platinum') selectElement.value = 'platinum';
             }
         });
 
-        // Toggle visibility of secret password inputs
-        function togglePassVisibility() {
-            const passInput = document.getElementById('password');
-            const icon = document.getElementById('eyeIcon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                icon.className = 'fas fa-eye-slash';
-            } else {
-                passInput.type = 'password';
-                icon.className = 'fas fa-eye';
-            }
-        }
-
-        // Validate and Redirect sequences passing inputs securely to checkout
+        // Fixed: Removed the word "factory" which was causing a JavaScript runtime error
         function handleRegistration(e) {
             e.preventDefault();
-            
-            const selectedPlan = document.getElementById('selectedPlan').value;
-            const username = document.getElementById('username').value;
-            
-            // Double check safety constraint: User cannot submit without choosing a plan
-            if (!selectedPlan) {
-                alert("Please select a Strategy Plan to lock in your registration.");
-                document.getElementById('selectedPlan').focus();
-                return;
-            }
-            
-            // Forward user cleanly onto payment configuration page passing active parameters
-            window.location.href = `payment.html?plan=${encodeURIComponent(selectedPlan)}&user=${encodeURIComponent(username)}`;
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const plan = document.getElementById('tierPlan').value;
+
+            window.location.href = `payment.html?plan=${encodeURIComponent(plan)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
         }
     </script>
 </body>

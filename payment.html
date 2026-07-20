@@ -21,12 +21,12 @@
                     },
                     colors: {
                         velora: {
-                            deep: '#1a0033',
-                            purple: '#3b0066',
-                            bright: '#9d4edd',
+                            deep: '#041e0f',       /* Swapped out purple for deep green */
+                            purple: '#0a3d1e',     /* Swapped out purple for dark green */
+                            bright: '#3bb75e',     /* Main Paystack Green accent */
                             gold: '#ffb703',
                             lightGold: '#ffdd6b',
-                            darkBg: '#0b001a'
+                            darkBg: '#020d06'      /* Dark deep green background */
                         }
                     }
                 }
@@ -35,7 +35,7 @@
     </script>
     <style>
         body { 
-            background-color: #0b001a; 
+            background-color: #020d06; 
             color: #f3f4f6; 
             margin: 0;
             overflow-x: hidden;
@@ -44,8 +44,8 @@
         }
         
         .premium-card {
-            background: linear-gradient(145deg, rgba(59,0,102,0.4) 0%, rgba(26,0,51,0.6) 100%);
-            border: 1px solid rgba(157, 78, 221, 0.25);
+            background: linear-gradient(145deg, rgba(10, 61, 30, 0.4) 0%, rgba(4, 30, 15, 0.6) 100%);
+            border: 1px solid rgba(59, 183, 94, 0.25);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
@@ -54,7 +54,7 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(140px);
-            opacity: 0.25;
+            opacity: 0.2;
             mix-blend-mode: screen;
             will-change: transform;
             pointer-events: none;
@@ -64,7 +64,7 @@
         .blob-1 {
             width: 450px;
             height: 450px;
-            background: radial-gradient(circle, #9d4edd 0%, rgba(157,78,221,0) 70%);
+            background: radial-gradient(circle, #3bb75e 0%, rgba(59, 183, 94, 0) 70%);
             top: 10%;
             right: -5%;
             animation: floatOrganic 22s ease-in-out infinite alternate;
@@ -73,7 +73,7 @@
         .blob-2 {
             width: 450px;
             height: 450px;
-            background: radial-gradient(circle, #3b0066 0%, rgba(59,0,102,0) 70%);
+            background: radial-gradient(circle, #0a3d1e 0%, rgba(10, 61, 30, 0) 70%);
             bottom: 5%;
             left: -10%;
             animation: floatOrganic 26s ease-in-out infinite alternate-reverse;
@@ -93,7 +93,7 @@
 
     <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
         
-        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-purple-900/20 bg-velora-darkBg/50">
+        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-emerald-900/20 bg-velora-darkBg/50">
             <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
                 V<span class="text-velora-bright">e</span>lora
             </a>
@@ -113,12 +113,12 @@
                 <h1 class="text-2xl font-extrabold text-white mb-2">Secure Verification Payment</h1>
                 <p class="text-sm text-gray-400 mb-8">Click pay below to verify your strategic earning pipeline via our secure processor.</p>
 
-                <div class="bg-velora-darkBg/60 border border-purple-900/30 rounded-2xl p-5 mb-8 text-left space-y-3">
+                <div class="bg-velora-darkBg/60 border border-emerald-900/30 rounded-2xl p-5 mb-8 text-left space-y-3">
                     <div class="flex justify-between items-center text-xs text-gray-400 uppercase tracking-wider">
                         <span>Selected Strategy</span>
                         <span>Price</span>
                     </div>
-                    <div class="flex justify-between items-end border-b border-purple-900/20 pb-3">
+                    <div class="flex justify-between items-end border-b border-emerald-900/20 pb-3">
                         <span id="displayPlanName" class="text-lg font-bold text-white capitalize">---</span>
                         <span id="displayPlanPrice" class="text-xl font-extrabold text-velora-gold">₦0.00</span>
                     </div>
@@ -142,17 +142,15 @@
             </div>
         </main>
 
-        <footer class="py-6 border-t border-purple-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
+        <footer class="py-6 border-t border-emerald-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
             <p>&copy; 2026 VELORA Digital. Payments processed securely via Paystack.</p>
         </footer>
 
     </div>
 
     <script>
-        // Coach CHI's WhatsApp contact number (international format without '+' or spaces)
-        const COACH_PHONE = "2349132107409"; 
+        const COACH_PHONE = "2347052554105"; 
 
-        // Retrieve registration variables from URL params sent by register.html
         const params = new URLSearchParams(window.location.search);
         const plan = params.get('plan') || '';
         const username = params.get('user') || 'User';
@@ -161,27 +159,24 @@
         let rawPriceString = "";
         let finalPlanName = "";
 
-        // Dynamically set price configurations based on the selected registration plan
         if (plan.toLowerCase() === 'platinum') {
             finalPlanName = "Platinum Plan";
             rawPriceString = "₦9,000 / $4.50";
-            amountInKobo = 9000 * 100; // ₦9,000 in Kobo
+            amountInKobo = 9000 * 100; 
         } else if (plan.toLowerCase() === 'gold') {
             finalPlanName = "Gold Plan";
             rawPriceString = "₦14,500 / $7.25";
-            amountInKobo = 14500 * 100; // ₦14,500 in Kobo
+            amountInKobo = 14500 * 100; 
         } else {
             finalPlanName = "Unselected Plan";
             rawPriceString = "₦0.00";
             amountInKobo = 0;
         }
 
-        // Render checkout screen details dynamically
         document.getElementById('displayPlanName').innerText = finalPlanName;
         document.getElementById('displayPlanPrice').innerText = rawPriceString.split(" / ")[0]; 
         document.getElementById('displayUsername').innerText = username;
 
-        // Fire the Paystack SDK Checkout Popup
         function payWithPaystack() {
             if (amountInKobo === 0) {
                 alert("Please select your strategy plan from the registration page first.");
@@ -191,9 +186,8 @@
 
             const paystack = new PaystackPop();
             paystack.newTransaction({
-                // Loaded directly with your live public key
                 key: 'pk_live_8b224c134d4236b808b2d779e4a5dd9d33c7adc2', 
-                email: 'payments@veloradigital.com', 
+                email: 'activation@velora.com', 
                 amount: amountInKobo,
                 currency: 'NGN',
                 metadata: {
@@ -211,16 +205,11 @@
                     ]
                 },
                 onSuccess: function(transaction) {
-                    // Grab success ID to prevent manual receipt tampering
                     const reference = transaction.reference;
-                    
-                    // Build customized chat message for Coach CHI
-                    const messageText = `Hello Coach CHI 👋\n\nI just successfully completed my payment on VELORA! 🎉\n\n🔹 *Username:* ${username}\n🔹 *Plan:* ${finalPlanName}\n🔹 *Paystack Ref:* ${reference}\n\nAttached below is my payment receipt. Please verify and guide me!`;
-                    
+                    const messageText = `Hello Coach CHI 👋\n\nI just successfully completed my payment on VELORA! 🎉\n\n🔹 *Username:* ${username}\n🔹 *Plan:* ${finalPlanName}\nAttached below is my payment receipt. Please verify and guide me!`;
                     const encodedMessage = encodeURIComponent(messageText);
                     const whatsappRedirectUrl = `https://wa.me/${COACH_PHONE}?text=${encodedMessage}`;
 
-                    // Show visual success state before sending them off to WhatsApp
                     alert("Payment Verified Successfully! Directing you to Coach CHI to submit your receipt proof.");
                     window.location.href = whatsappRedirectUrl;
                 },
