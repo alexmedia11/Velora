@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELORA | Complete Secure Payment</title>
+    <title>VELORA | Secure Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,46 +39,97 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
-        .premium-card {
-            background: linear-gradient(145deg, rgba(10, 61, 30, 0.4) 0%, rgba(4, 30, 15, 0.6) 100%);
-            border: 1px solid rgba(59, 183, 94, 0.25);
-            backdrop-filter: blur(12px);
+
+        /* 3D Background Glow & Mesh */
+        .bg-mesh {
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(59, 183, 94, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255, 183, 3, 0.08) 0%, transparent 35%);
+        }
+
+        /* 3D Dynamic Card Tilt Container */
+        .card-wrapper {
+            perspective: 1200px;
+        }
+
+        .premium-card-3d {
+            background: linear-gradient(135deg, rgba(10, 61, 30, 0.45) 0%, rgba(4, 30, 15, 0.8) 100%);
+            border: 1px solid rgba(59, 183, 94, 0.3);
+            backdrop-filter: blur(20px);
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 183, 94, 0.15);
+        }
+
+        /* Continuous Pulse for 3D Icon Badge */
+        @keyframes float3D {
+            0%, 100% { transform: translateZ(30px) translateY(0px) rotate(0deg); }
+            50% { transform: translateZ(40px) translateY(-6px) rotate(3deg); }
+        }
+
+        .floating-badge {
+            animation: float3D 4s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .translate-z-10 { transform: translateZ(10px); }
+        .translate-z-20 { transform: translateZ(20px); }
+        .translate-z-30 { transform: translateZ(30px); }
+
+        /* Shimmering Button Effect */
+        .btn-shimmer {
+            background-size: 200% auto;
+            background-image: linear-gradient(90deg, #ffb703 0%, #ffdd6b 50%, #ffb703 100%);
+            transition: 0.4s ease;
+        }
+        .btn-shimmer:hover {
+            background-position: right center;
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.4);
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-mesh relative">
+
+    <!-- Ambient Floating Orbs -->
+    <div class="fixed top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-velora-bright/10 rounded-full blur-[120px] pointer-events-none"></div>
 
     <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
         
-        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-emerald-900/20 bg-velora-darkBg/50">
+        <!-- Header -->
+        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-emerald-900/20 bg-velora-darkBg/60 backdrop-blur-md">
             <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
                 V<span class="text-velora-bright">e</span>lora
             </a>
-            <div class="text-xs text-gray-400 flex items-center space-x-2">
-                <i class="fas fa-lock text-velora-gold"></i>
-                <span>SSL Encrypted Checkout</span>
+            <div class="text-xs text-gray-400 flex items-center space-x-2 bg-velora-purple/30 px-3 py-1.5 rounded-full border border-emerald-800/40">
+                <i class="fas fa-shield-halved text-velora-gold"></i>
+                <span>256-Bit Encrypted Checkout</span>
             </div>
         </header>
 
-        <main class="w-full max-w-lg mx-auto px-4 py-12 flex-grow flex flex-col justify-center">
-            <div class="premium-card rounded-3xl p-6 md:p-8 shadow-2xl text-center">
+        <!-- Main Card Section -->
+        <main class="w-full max-w-lg mx-auto px-4 py-10 flex-grow flex flex-col justify-center card-wrapper">
+            <div id="tiltCard" class="premium-card-3d rounded-3xl p-6 md:p-8 text-center relative overflow-hidden">
                 
-                <div class="w-14 h-14 bg-velora-purple/60 border border-velora-bright/30 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
-                    <i class="fas fa-shield-alt text-2xl text-velora-gold"></i>
+                <!-- Glowing Corner Accent -->
+                <div class="absolute -top-12 -right-12 w-32 h-32 bg-velora-bright/20 rounded-full blur-2xl"></div>
+
+                <!-- Floating 3D Badge -->
+                <div class="floating-badge w-16 h-16 bg-gradient-to-br from-velora-purple to-velora-deep border border-velora-bright/40 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-2xl">
+                    <i class="fas fa-lock text-3xl text-velora-gold drop-shadow-md"></i>
                 </div>
 
-                <h1 class="text-2xl font-extrabold text-white mb-1">Complete Payment</h1>
-                <p class="text-xs text-gray-400 mb-6">Review your order details below to proceed.</p>
+                <h1 class="text-2xl font-extrabold text-white mb-1 tracking-tight translate-z-20">Complete Payment</h1>
+                <p class="text-xs text-gray-400 mb-6 translate-z-10">Review your order details below to activate access.</p>
 
-                <!-- Order Summary Card -->
-                <div class="bg-velora-darkBg/60 border border-emerald-900/30 rounded-2xl p-4 mb-6 text-left space-y-2 text-xs">
-                    <div class="flex justify-between text-gray-400 uppercase tracking-wider">
-                        <span>Selected Strategy</span>
-                        <span>Price</span>
+                <!-- Order Summary Glass Box -->
+                <div class="bg-black/40 border border-emerald-900/40 rounded-2xl p-4 mb-6 text-left space-y-3 text-xs translate-z-20 shadow-inner">
+                    <div class="flex justify-between text-gray-400 uppercase tracking-widest text-[10px] font-bold">
+                        <span>Selected Package</span>
+                        <span>Amount</span>
                     </div>
-                    <div class="flex justify-between items-end border-b border-emerald-900/20 pb-2">
+                    <div class="flex justify-between items-end border-b border-emerald-900/30 pb-3">
                         <span id="displayPlanName" class="text-base font-bold text-white">---</span>
-                        <span id="displayPlanPrice" class="text-lg font-extrabold text-velora-gold">---</span>
+                        <span id="displayPlanPrice" class="text-xl font-black text-velora-gold drop-shadow">---</span>
                     </div>
                     <div class="flex justify-between items-center text-gray-400 pt-1">
                         <span>Username:</span>
@@ -90,77 +141,43 @@
                     </div>
                 </div>
 
-                <!-- NIGERIA CONTAINER -->
-                <div id="nigeriaSection" class="hidden space-y-4">
-                    <p class="text-xs text-gray-300 font-semibold mb-2">Choose your preferred payment method:</p>
+                <!-- NIGERIA CONTAINER (PAYSTACK ONLY) -->
+                <div id="nigeriaSection" class="hidden space-y-4 translate-z-30">
+                    <div class="bg-velora-bright/10 border border-velora-bright/30 rounded-xl p-3 text-xs text-emerald-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-bolt text-velora-gold"></i>
+                        <span>Instant Auto-Activation via Paystack</span>
+                    </div>
+
+                    <button type="button" onclick="payWithPaystack()" class="btn-shimmer w-full text-velora-deep font-extrabold text-sm py-4 rounded-xl transition transform active:scale-95 shadow-2xl flex items-center justify-center space-x-2">
+                        <i class="fas fa-credit-card text-base"></i>
+                        <span>Pay Safely via Paystack</span>
+                    </button>
                     
-                    <!-- Tab Switcher -->
-                    <div class="grid grid-cols-2 gap-2 bg-velora-darkBg/80 p-1 rounded-xl border border-emerald-900/40">
-                        <button type="button" id="tabPaystackBtn" onclick="switchNgTab('paystack')" class="py-2 text-xs font-bold rounded-lg transition bg-velora-bright text-velora-deep">
-                            Paystack (Card/Transfer)
-                        </button>
-                        <button type="button" id="tabManualBtn" onclick="switchNgTab('manual')" class="py-2 text-xs font-bold rounded-lg transition text-gray-400 hover:text-white">
-                            Manual Transfer
-                        </button>
-                    </div>
-
-                    <!-- Option A: Paystack -->
-                    <div id="paystackContent" class="pt-2">
-                        <button type="button" onclick="payWithPaystack()" class="w-full bg-gradient-to-r from-velora-gold to-velora-lightGold text-velora-deep font-extrabold text-sm py-3.5 rounded-xl transition transform active:scale-95 shadow-xl flex items-center justify-center space-x-2">
-                            <i class="fas fa-credit-card text-sm"></i>
-                            <span>Pay Automatically via Paystack</span>
-                        </button>
-                    </div>
-
-                    <!-- Option B: Manual Bank Transfer -->
-                    <div id="manualContent" class="hidden space-y-3 pt-2 text-left">
-                        <!-- OPay Warning Notice -->
-                        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-[11px] text-red-300 flex items-start gap-2">
-                            <i class="fas fa-exclamation-triangle text-red-400 text-sm mt-0.5"></i>
-                            <span><strong>Important:</strong> Payments made via <strong>OPay</strong> are NOT allowed for manual transfer. Please use any other bank app or USSD code.</span>
-                        </div>
-
-                        <!-- Bank Details Display Box -->
-                        <div class="bg-black/40 border border-emerald-900/40 rounded-xl p-4 text-xs space-y-2">
-                            <div class="flex justify-between"><span class="text-gray-400">Bank Name:</span><span class="font-bold text-white">MONIEPOINT MFB</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">Account Number:</span><span class="font-mono font-extrabold text-velora-gold text-sm tracking-wider">6704172716</span></div>
-                            <div class="flex justify-between"><span class="text-gray-400">Account Name:</span><span class="font-semibold text-gray-200">Chidimma Ann IGWE</span></div>
-                        </div>
-
-                        <!-- Updated Button Label -->
-                        <button type="button" onclick="sendManualProof('Nigeria')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                            <i class="fab fa-whatsapp text-lg"></i>
-                            <span>Submit Receipt</span>
-                        </button>
-                    </div>
+                    <p class="text-[11px] text-gray-400">Supports Card, Bank Transfer, USSD & Apple Pay</p>
                 </div>
 
                 <!-- GHANA CONTAINER -->
-                <div id="ghanaSection" class="hidden space-y-3 text-left">
-                    <div class="bg-black/40 border border-emerald-900/40 rounded-xl p-4 text-xs space-y-2">
-                        <div class="flex justify-between items-center border-b border-emerald-900/20 pb-2">
-                            <span class="font-bold text-white uppercase">MTN Mobile Money</span>
+                <div id="ghanaSection" class="hidden space-y-3 text-left translate-z-30">
+                    <div class="bg-black/50 border border-emerald-900/50 rounded-xl p-4 text-xs space-y-2">
+                        <div class="flex justify-between items-center border-b border-emerald-900/30 pb-2">
+                            <span class="font-bold text-white uppercase tracking-wider">MTN Mobile Money</span>
                             <span class="text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded font-bold">GHANA 🇬🇭</span>
                         </div>
                         <div class="flex justify-between"><span class="text-gray-400">MOMO Number:</span><span class="font-mono font-extrabold text-velora-gold text-sm">0555793162</span></div>
                         <div class="flex justify-between"><span class="text-gray-400">Account Name:</span><span class="font-semibold text-gray-200">ABIGAIL ODUME</span></div>
                     </div>
 
-                    <div class="bg-velora-darkBg/40 p-3 rounded-xl border border-emerald-900/20 text-[11px] text-gray-300">
-                        📌 <em>After payment, click below to send a screenshot of your payment slip and Sender's Name for immediate confirmation.</em>
-                    </div>
-
                     <button type="button" onclick="sendManualProof('Ghana')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
                         <i class="fab fa-whatsapp text-lg"></i>
-                        <span>Submit Receipt</span>
+                        <span>Submit Receipt via WhatsApp</span>
                     </button>
                 </div>
 
                 <!-- OTHER REGIONS FALLBACK -->
-                <div id="otherCountrySection" class="hidden space-y-3 text-center">
-                    <div class="bg-black/40 border border-emerald-900/40 rounded-xl p-4 text-xs space-y-2">
-                        <p class="text-gray-300">Direct agent payment line selected for your region.</p>
-                        <p class="text-velora-gold font-bold">Contact Coach CHI directly to receive instant local payment instructions.</p>
+                <div id="otherCountrySection" class="hidden space-y-3 text-center translate-z-30">
+                    <div class="bg-black/50 border border-emerald-900/50 rounded-xl p-4 text-xs space-y-2">
+                        <p class="text-gray-300">Agent processing available for your location.</p>
+                        <p class="text-velora-gold font-bold">Contact Coach CHI directly for local details.</p>
                     </div>
 
                     <button type="button" onclick="sendManualProof('Other')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
@@ -169,16 +186,18 @@
                     </button>
                 </div>
 
-                <div class="mt-6">
-                    <a href="register.html" class="text-xs text-gray-400 hover:text-red-400 transition">
-                        Cancel & Edit Registration Details
+                <div class="mt-6 translate-z-10">
+                    <a href="register.html" class="text-xs text-gray-400 hover:text-red-400 transition inline-flex items-center space-x-1">
+                        <i class="fas fa-arrow-left text-[10px]"></i>
+                        <span>Cancel & Edit Details</span>
                     </a>
                 </div>
 
             </div>
         </main>
 
-        <footer class="py-6 border-t border-emerald-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/20">
+        <!-- Footer -->
+        <footer class="py-6 border-t border-emerald-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/30 backdrop-blur-sm">
             <p>&copy; 2026 VELORA Digital. All rights reserved.</p>
         </footer>
 
@@ -219,25 +238,6 @@
         document.getElementById('displayUsername').innerText = username;
         document.getElementById('displayEmail').innerText = userEmail || "Not Provided";
 
-        function switchNgTab(tab) {
-            const paystackBtn = document.getElementById('tabPaystackBtn');
-            const manualBtn = document.getElementById('tabManualBtn');
-            const paystackContent = document.getElementById('paystackContent');
-            const manualContent = document.getElementById('manualContent');
-
-            if (tab === 'paystack') {
-                paystackBtn.className = "py-2 text-xs font-bold rounded-lg transition bg-velora-bright text-velora-deep";
-                manualBtn.className = "py-2 text-xs font-bold rounded-lg transition text-gray-400 hover:text-white";
-                paystackContent.classList.remove('hidden');
-                manualContent.classList.add('hidden');
-            } else {
-                manualBtn.className = "py-2 text-xs font-bold rounded-lg transition bg-velora-bright text-velora-deep";
-                paystackBtn.className = "py-2 text-xs font-bold rounded-lg transition text-gray-400 hover:text-white";
-                manualContent.classList.remove('hidden');
-                paystackContent.classList.add('hidden');
-            }
-        }
-
         function payWithPaystack() {
             if (!userEmail) {
                 alert("Email address is missing. Please re-enter details from registration.");
@@ -248,7 +248,7 @@
             const paystack = new PaystackPop();
             paystack.newTransaction({
                 key: 'pk_live_8b224c134d4236b808b2d779e4a5dd9d33c7adc2',
-                email: userEmail, // Passes registration email directly to Paystack for auto-receipts
+                email: userEmail,
                 amount: amountInKobo,
                 currency: 'NGN',
                 metadata: {
@@ -268,14 +268,31 @@
             let msg = "";
             if (region === 'Ghana') {
                 msg = `Hello Coach CHI 👋\n\nI just transferred ${displayPrice} via MTN MoMo for VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nI have attached my payment slip/sender name below for confirmation.`;
-            } else if (region === 'Nigeria') {
-                msg = `Hello Coach CHI 👋\n\nI just completed my manual bank transfer of ${displayPrice} to Moniepoint!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nAttached is my payment proof receipt. Please verify and activate my account!`;
             } else {
                 msg = `Hello Coach CHI 👋\n\nI am registering from ${country} for the ${finalPlanName} (${username} / ${userEmail}). Please assist me with local payment options!`;
             }
 
             window.location.href = `https://wa.me/${COACH_PHONE}?text=${encodeURIComponent(msg)}`;
         }
+
+        /* Interactive 3D Card Hover Effect */
+        const card = document.getElementById('tiltCard');
+        const wrapper = document.querySelector('.card-wrapper');
+
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            const rotateX = (-y / rect.height) * 15;
+            const rotateY = (x / rect.width) * 15;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
     </script>
 </body>
 </html>
