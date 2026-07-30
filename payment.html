@@ -9,8 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://js.paystack.co/v2/inline.js"></script>
 
     <script>
         tailwind.config = {
@@ -79,12 +77,12 @@
         /* Shimmering Button Effect */
         .btn-shimmer {
             background-size: 200% auto;
-            background-image: linear-gradient(90deg, #ffb703 0%, #ffdd6b 50%, #ffb703 100%);
+            background-image: linear-gradient(90deg, #3bb75e 0%, #ffdd6b 50%, #3bb75e 100%);
             transition: 0.4s ease;
         }
         .btn-shimmer:hover {
             background-position: right center;
-            box-shadow: 0 0 25px rgba(255, 183, 3, 0.4);
+            box-shadow: 0 0 25px rgba(59, 183, 94, 0.4);
         }
     </style>
 </head>
@@ -115,11 +113,11 @@
 
                 <!-- Floating 3D Badge -->
                 <div class="floating-badge w-16 h-16 bg-gradient-to-br from-velora-purple to-velora-deep border border-velora-bright/40 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-2xl">
-                    <i class="fas fa-lock text-3xl text-velora-gold drop-shadow-md"></i>
+                    <i class="fas fa-university text-3xl text-velora-gold drop-shadow-md"></i>
                 </div>
 
                 <h1 class="text-2xl font-extrabold text-white mb-1 tracking-tight translate-z-20">Complete Payment</h1>
-                <p class="text-xs text-gray-400 mb-6 translate-z-10">Review your order details below to activate access.</p>
+                <p class="text-xs text-gray-400 mb-6 translate-z-10">Make a direct transfer to complete your activation.</p>
 
                 <!-- Order Summary Glass Box -->
                 <div class="bg-black/40 border border-emerald-900/40 rounded-2xl p-4 mb-6 text-left space-y-3 text-xs translate-z-20 shadow-inner">
@@ -141,19 +139,38 @@
                     </div>
                 </div>
 
-                <!-- NIGERIA CONTAINER (PAYSTACK ONLY) -->
-                <div id="nigeriaSection" class="hidden space-y-4 translate-z-30">
-                    <div class="bg-velora-bright/10 border border-velora-bright/30 rounded-xl p-3 text-xs text-emerald-300 flex items-center justify-center space-x-2">
-                        <i class="fas fa-bolt text-velora-gold"></i>
-                        <span>Instant Auto-Activation via Paystack</span>
+                <!-- NIGERIA CONTAINER (DIRECT MANUAL BANK TRANSFER) -->
+                <div id="nigeriaSection" class="hidden space-y-4 text-left translate-z-30">
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-info-circle text-amber-400"></i>
+                        <span>Gateway Maintenance: Please pay via Direct Bank Transfer</span>
                     </div>
 
-                    <button type="button" onclick="payWithPaystack()" class="btn-shimmer w-full text-velora-deep font-extrabold text-sm py-4 rounded-xl transition transform active:scale-95 shadow-2xl flex items-center justify-center space-x-2">
-                        <i class="fas fa-credit-card text-base"></i>
-                        <span>Pay Safely via Paystack</span>
+                    <!-- IMPORTANT WARNING BANNER FOR OPAY -->
+                    <div class="bg-red-500/15 border border-red-500/40 rounded-xl p-3 text-xs text-red-300 flex items-start space-x-2.5">
+                        <i class="fas fa-triangle-exclamation text-red-400 text-sm mt-0.5"></i>
+                        <div>
+                            <span class="font-bold text-red-200 block uppercase tracking-wide text-[10px]">Important Notice</span>
+                            <span>Do <strong>NOT</strong> make transfer from <strong>OPay Bank</strong>. OPay payments are not supported on Velora. Kindly use any other bank app.</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-black/60 border border-emerald-900/60 rounded-xl p-4 text-xs space-y-2.5">
+                        <div class="flex justify-between items-center border-b border-emerald-900/30 pb-2">
+                            <span class="font-bold text-white uppercase tracking-wider">Direct Bank Transfer</span>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">NIGERIA 🇳🇬</span>
+                        </div>
+                        <div class="flex justify-between items-center"><span class="text-gray-400">Bank Name:</span><span class="font-bold text-white text-sm">Moniepoint MFB</span></div>
+                        <div class="flex justify-between items-center"><span class="text-gray-400">Account Number:</span><span class="font-mono font-extrabold text-velora-gold text-base tracking-wider">5703994381</span></div>
+                        <div class="flex justify-between items-center"><span class="text-gray-400">Account Name:</span><span class="font-semibold text-gray-200">Chidimma Ann Igwe</span></div>
+                    </div>
+
+                    <button type="button" onclick="sendManualProof('Nigeria')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Submit Transfer Receipt via WhatsApp</span>
                     </button>
                     
-                    <p class="text-[11px] text-gray-400">Supports Card, Bank Transfer, USSD & Apple Pay</p>
+                    <p class="text-[11px] text-gray-400 text-center">Transfer exact amount & send receipt screenshot for fast activation.</p>
                 </div>
 
                 <!-- GHANA CONTAINER -->
@@ -212,7 +229,6 @@
         const username = params.get('user') || 'User';
         const userEmail = params.get('email') || '';
 
-        let amountInKobo = 0;
         let displayPrice = "₦0.00";
         let finalPlanName = plan.toLowerCase() === 'gold' ? 'Gold Plan' : 'Platinum Plan';
 
@@ -221,13 +237,7 @@
             displayPrice = plan.toLowerCase() === 'gold' ? '250 GHS' : '170 GHS';
         } else if (country === 'NG') {
             document.getElementById('nigeriaSection').classList.remove('hidden');
-            if (plan.toLowerCase() === 'gold') {
-                displayPrice = "₦14,500";
-                amountInKobo = 14500 * 100;
-            } else {
-                displayPrice = "₦9,000";
-                amountInKobo = 9000 * 100;
-            }
+            displayPrice = plan.toLowerCase() === 'gold' ? '₦14,500' : '₦9,000';
         } else {
             document.getElementById('otherCountrySection').classList.remove('hidden');
             displayPrice = "Contact Support";
@@ -238,35 +248,11 @@
         document.getElementById('displayUsername').innerText = username;
         document.getElementById('displayEmail').innerText = userEmail || "Not Provided";
 
-        function payWithPaystack() {
-            if (!userEmail) {
-                alert("Email address is missing. Please re-enter details from registration.");
-                window.location.href = "register.html";
-                return;
-            }
-
-            const paystack = new PaystackPop();
-            paystack.newTransaction({
-                key: 'pk_live_8b224c134d4236b808b2d779e4a5dd9d33c7adc2',
-                email: userEmail,
-                amount: amountInKobo,
-                currency: 'NGN',
-                metadata: {
-                    custom_fields: [
-                        { display_name: "Username", variable_name: "username", value: username },
-                        { display_name: "Selected Plan", variable_name: "selected_plan", value: finalPlanName }
-                    ]
-                },
-                onSuccess: function(transaction) {
-                    const msg = `Hello Coach CHI 👋\n\nI completed my automated payment on VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n🔹 Ref: ${transaction.reference}\n\nPlease verify my account!`;
-                    window.location.href = `https://wa.me/${COACH_PHONE}?text=${encodeURIComponent(msg)}`;
-                }
-            });
-        }
-
         function sendManualProof(region) {
             let msg = "";
-            if (region === 'Ghana') {
+            if (region === 'Nigeria') {
+                msg = `Hello Coach CHI 👋\n\nI just transferred ${displayPrice} via Direct Bank Transfer for VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nI have attached my payment transfer proof below for activation.`;
+            } else if (region === 'Ghana') {
                 msg = `Hello Coach CHI 👋\n\nI just transferred ${displayPrice} via MTN MoMo for VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nI have attached my payment slip/sender name below for confirmation.`;
             } else {
                 msg = `Hello Coach CHI 👋\n\nI am registering from ${country} for the ${finalPlanName} (${username} / ${userEmail}). Please assist me with local payment options!`;
@@ -279,20 +265,22 @@
         const card = document.getElementById('tiltCard');
         const wrapper = document.querySelector('.card-wrapper');
 
-        wrapper.addEventListener('mousemove', (e) => {
-            const rect = wrapper.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
+        if (wrapper && card) {
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
 
-            const rotateX = (-y / rect.height) * 15;
-            const rotateY = (x / rect.width) * 15;
+                const rotateX = (-y / rect.height) * 15;
+                const rotateY = (x / rect.width) * 15;
 
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
 
-        wrapper.addEventListener('mouseleave', () => {
-            card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        });
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
     </script>
 </body>
 </html>
