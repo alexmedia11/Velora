@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELORA | Secure Payment</title>
+    <title>VELORA | Secure Checkout</title>
+    
+    <!-- Styles & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Squad Inline SDK -->
+    <script src="https://checkout.squadco.com/widget/squad.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -17,12 +22,12 @@
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         velora: {
-                            deep: '#041e0f',
-                            purple: '#0a3d1e',
-                            bright: '#3bb75e',
-                            gold: '#ffb703',
-                            lightGold: '#ffdd6b',
-                            darkBg: '#020d06'
+                            bgCream: '#FDFBF7',
+                            navyDeep: '#0A1128',
+                            navyText: '#1C2541',
+                            purpleAccent: '#4A148C',
+                            purpleHover: '#320B61',
+                            mutedGray: '#6C757D'
                         }
                     }
                 }
@@ -30,256 +35,132 @@
         }
     </script>
     <style>
-        body { 
-            background-color: #020d06; 
-            color: #f3f4f6; 
-            margin: 0;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* 3D Background Glow & Mesh */
-        .bg-mesh {
-            background: 
-                radial-gradient(circle at 50% 20%, rgba(59, 183, 94, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(255, 183, 3, 0.08) 0%, transparent 35%);
-        }
-
-        /* 3D Dynamic Card Tilt Container */
-        .card-wrapper {
-            perspective: 1200px;
-        }
-
-        .premium-card-3d {
-            background: linear-gradient(135deg, rgba(10, 61, 30, 0.45) 0%, rgba(4, 30, 15, 0.8) 100%);
-            border: 1px solid rgba(59, 183, 94, 0.3);
-            backdrop-filter: blur(20px);
-            transform-style: preserve-3d;
-            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 183, 94, 0.15);
-        }
-
-        /* Continuous Pulse for 3D Icon Badge */
-        @keyframes float3D {
-            0%, 100% { transform: translateZ(30px) translateY(0px) rotate(0deg); }
-            50% { transform: translateZ(40px) translateY(-6px) rotate(3deg); }
-        }
-
-        .floating-badge {
-            animation: float3D 4s ease-in-out infinite;
-            transform-style: preserve-3d;
-        }
-
-        .translate-z-10 { transform: translateZ(10px); }
-        .translate-z-20 { transform: translateZ(20px); }
-        .translate-z-30 { transform: translateZ(30px); }
-
-        /* Shimmering Button Effect */
-        .btn-shimmer {
-            background-size: 200% auto;
-            background-image: linear-gradient(90deg, #3bb75e 0%, #ffdd6b 50%, #3bb75e 100%);
-            transition: 0.4s ease;
-        }
-        .btn-shimmer:hover {
-            background-position: right center;
-            box-shadow: 0 0 25px rgba(59, 183, 94, 0.4);
+        body { background-color: #FDFBF7; color: #1C2541; }
+        .luxury-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(74, 20, 140, 0.08);
+            box-shadow: 0 20px 40px rgba(10, 17, 40, 0.04);
         }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-mesh relative">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-velora-bgCream">
 
-    <!-- Ambient Floating Orbs -->
-    <div class="fixed top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-velora-bright/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <header class="w-full py-6 px-6 border-b border-purple-900/10 bg-white/60 backdrop-blur-md flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-extrabold text-velora-navyDeep tracking-tight">V<span class="text-velora-purpleAccent">e</span>lora</a>
+        <a href="register.html" class="text-xs font-semibold text-velora-mutedGray hover:text-velora-purpleAccent transition flex items-center gap-1.5">
+            <i class="fas fa-arrow-left text-[10px]"></i> Edit Registration
+        </a>
+    </header>
 
-    <div class="relative z-10 w-full min-h-screen flex flex-col justify-between">
-        
-        <!-- Header -->
-        <header class="w-full py-6 px-6 md:px-12 flex justify-between items-center border-b border-emerald-900/20 bg-velora-darkBg/60 backdrop-blur-md">
-            <a href="index.html" class="text-2xl font-extrabold tracking-wider text-white">
-                V<span class="text-velora-bright">e</span>lora
-            </a>
-            <div class="text-xs text-gray-400 flex items-center space-x-2 bg-velora-purple/30 px-3 py-1.5 rounded-full border border-emerald-800/40">
-                <i class="fas fa-shield-halved text-velora-gold"></i>
-                <span>256-Bit Encrypted Checkout</span>
+    <main class="w-full max-w-md mx-auto px-4 py-12 flex-grow flex flex-col justify-center">
+        <div class="luxury-card rounded-3xl p-8">
+            <div class="text-center mb-6">
+                <span class="inline-block p-3 rounded-full bg-velora-purpleAccent/10 text-velora-purpleAccent mb-3">
+                    <i class="fas fa-shield-alt text-xl"></i>
+                </span>
+                <h1 class="text-2xl font-extrabold text-velora-navyDeep tracking-tight">Complete Payment</h1>
+                <p class="text-xs text-velora-mutedGray mt-1">Automated Instant Verification via Squad (GTCO)</p>
             </div>
-        </header>
 
-        <!-- Main Card Section -->
-        <main class="w-full max-w-lg mx-auto px-4 py-10 flex-grow flex flex-col justify-center card-wrapper">
-            <div id="tiltCard" class="premium-card-3d rounded-3xl p-6 md:p-8 text-center relative overflow-hidden">
-                
-                <!-- Glowing Corner Accent -->
-                <div class="absolute -top-12 -right-12 w-32 h-32 bg-velora-bright/20 rounded-full blur-2xl"></div>
-
-                <!-- Floating 3D Badge -->
-                <div class="floating-badge w-16 h-16 bg-gradient-to-br from-velora-purple to-velora-deep border border-velora-bright/40 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-2xl">
-                    <i class="fas fa-university text-3xl text-velora-gold drop-shadow-md"></i>
+            <!-- Summary Order Box -->
+            <div class="bg-velora-bgCream border border-purple-900/10 rounded-2xl p-5 mb-5 space-y-3">
+                <div class="flex justify-between items-center text-xs pb-2 border-b border-purple-900/5">
+                    <span class="text-velora-mutedGray">Account Username:</span>
+                    <span id="displayUser" class="font-bold text-velora-navyDeep">Loading...</span>
                 </div>
-
-                <h1 class="text-2xl font-extrabold text-white mb-1 tracking-tight translate-z-20">Complete Payment</h1>
-                <p class="text-xs text-gray-400 mb-6 translate-z-10">Make a direct transfer to complete your activation.</p>
-
-                <!-- Order Summary Glass Box -->
-                <div class="bg-black/40 border border-emerald-900/40 rounded-2xl p-4 mb-6 text-left space-y-3 text-xs translate-z-20 shadow-inner">
-                    <div class="flex justify-between text-gray-400 uppercase tracking-widest text-[10px] font-bold">
-                        <span>Selected Package</span>
-                        <span>Amount</span>
-                    </div>
-                    <div class="flex justify-between items-end border-b border-emerald-900/30 pb-3">
-                        <span id="displayPlanName" class="text-base font-bold text-white">---</span>
-                        <span id="displayPlanPrice" class="text-xl font-black text-velora-gold drop-shadow">---</span>
-                    </div>
-                    <div class="flex justify-between items-center text-gray-400 pt-1">
-                        <span>Username:</span>
-                        <span id="displayUsername" class="font-semibold text-gray-200">---</span>
-                    </div>
-                    <div class="flex justify-between items-center text-gray-400">
-                        <span>Email:</span>
-                        <span id="displayEmail" class="font-semibold text-gray-200">---</span>
-                    </div>
+                <div class="flex justify-between items-center text-xs pb-2 border-b border-purple-900/5">
+                    <span class="text-velora-mutedGray">Email Address:</span>
+                    <span id="displayEmail" class="font-bold text-velora-navyDeep truncate max-w-[180px]">Loading...</span>
                 </div>
-
-                <!-- NIGERIA CONTAINER (DIRECT MANUAL BANK TRANSFER) -->
-                <div id="nigeriaSection" class="hidden space-y-4 text-left translate-z-30">
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-300 flex items-center justify-center space-x-2">
-                        <i class="fas fa-info-circle text-amber-400"></i>
-                        <span>Gateway Maintenance: Please pay via Direct Bank Transfer</span>
-                    </div>
-
-                    <!-- IMPORTANT WARNING BANNER FOR OPAY -->
-                    <div class="bg-red-500/15 border border-red-500/40 rounded-xl p-3 text-xs text-red-300 flex items-start space-x-2.5">
-                        <i class="fas fa-triangle-exclamation text-red-400 text-sm mt-0.5"></i>
-                        <div>
-                            <span class="font-bold text-red-200 block uppercase tracking-wide text-[10px]">Important Notice</span>
-                            <span>Do <strong>NOT</strong> make transfer from <strong>OPay Bank</strong>. OPay payments are not supported on Velora. Kindly use any other bank app.</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-black/60 border border-emerald-900/60 rounded-xl p-4 text-xs space-y-2.5">
-                        <div class="flex justify-between items-center border-b border-emerald-900/30 pb-2">
-                            <span class="font-bold text-white uppercase tracking-wider">Direct Bank Transfer</span>
-                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">NIGERIA 🇳🇬</span>
-                        </div>
-                        <div class="flex justify-between items-center"><span class="text-gray-400">Bank Name:</span><span class="font-bold text-white text-sm">Moniepoint MFB</span></div>
-                        <div class="flex justify-between items-center"><span class="text-gray-400">Account Number:</span><span class="font-mono font-extrabold text-velora-gold text-base tracking-wider">5703994381</span></div>
-                        <div class="flex justify-between items-center"><span class="text-gray-400">Account Name:</span><span class="font-semibold text-gray-200">Chidimma Ann Igwe</span></div>
-                    </div>
-
-                    <button type="button" onclick="sendManualProof('Nigeria')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                        <i class="fab fa-whatsapp text-xl"></i>
-                        <span>Submit Transfer Receipt via WhatsApp</span>
-                    </button>
-                    
-                    <p class="text-[11px] text-gray-400 text-center">Transfer exact amount & send receipt screenshot for fast activation.</p>
+                <div class="flex justify-between items-center text-xs pb-2 border-b border-purple-900/5">
+                    <span class="text-velora-mutedGray">Selected Tier:</span>
+                    <span id="displayPlan" class="font-bold text-velora-purpleAccent uppercase">Loading...</span>
                 </div>
-
-                <!-- GHANA CONTAINER -->
-                <div id="ghanaSection" class="hidden space-y-3 text-left translate-z-30">
-                    <div class="bg-black/50 border border-emerald-900/50 rounded-xl p-4 text-xs space-y-2">
-                        <div class="flex justify-between items-center border-b border-emerald-900/30 pb-2">
-                            <span class="font-bold text-white uppercase tracking-wider">MTN Mobile Money</span>
-                            <span class="text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded font-bold">GHANA 🇬🇭</span>
-                        </div>
-                        <div class="flex justify-between"><span class="text-gray-400">MOMO Number:</span><span class="font-mono font-extrabold text-velora-gold text-sm">0555793162</span></div>
-                        <div class="flex justify-between"><span class="text-gray-400">Account Name:</span><span class="font-semibold text-gray-200">ABIGAIL ODUME</span></div>
-                    </div>
-
-                    <button type="button" onclick="sendManualProof('Ghana')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                        <i class="fab fa-whatsapp text-lg"></i>
-                        <span>Submit Receipt via WhatsApp</span>
-                    </button>
+                <div class="flex justify-between items-center text-sm pt-1">
+                    <span class="font-extrabold text-velora-navyDeep">Total Amount:</span>
+                    <span id="displayAmount" class="font-extrabold text-lg text-velora-purpleAccent">₦0</span>
                 </div>
-
-                <!-- OTHER REGIONS FALLBACK -->
-                <div id="otherCountrySection" class="hidden space-y-3 text-center translate-z-30">
-                    <div class="bg-black/50 border border-emerald-900/50 rounded-xl p-4 text-xs space-y-2">
-                        <p class="text-gray-300">Agent processing available for your location.</p>
-                        <p class="text-velora-gold font-bold">Contact Coach CHI directly for local details.</p>
-                    </div>
-
-                    <button type="button" onclick="sendManualProof('Other')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                        <i class="fab fa-whatsapp text-lg"></i>
-                        <span>Contact Support</span>
-                    </button>
-                </div>
-
-                <div class="mt-6 translate-z-10">
-                    <a href="register.html" class="text-xs text-gray-400 hover:text-red-400 transition inline-flex items-center space-x-1">
-                        <i class="fas fa-arrow-left text-[10px]"></i>
-                        <span>Cancel & Edit Details</span>
-                    </a>
-                </div>
-
             </div>
-        </main>
 
-        <!-- Footer -->
-        <footer class="py-6 border-t border-emerald-900/10 text-center text-xs text-gray-500 w-full bg-velora-darkBg/30 backdrop-blur-sm">
-            <p>&copy; 2026 VELORA Digital. All rights reserved.</p>
-        </footer>
+            <!-- Ready to Pay Message Box -->
+            <div class="bg-purple-900/5 border border-velora-purpleAccent/20 rounded-2xl p-4 mb-6 text-center">
+                <p class="text-xs text-velora-navyText font-medium leading-relaxed">
+                    💬 Click button below when ready only.
+                </p>
+            </div>
 
-    </div>
+            <button type="button" onclick="payWithSquad()" class="w-full bg-velora-purpleAccent hover:bg-velora-purpleHover text-white font-extrabold py-4 rounded-xl transition transform active:scale-[0.98] shadow-xl shadow-velora-purpleAccent/10 flex justify-center items-center gap-2 text-base">
+                <i class="fas fa-lock text-sm"></i> Pay & Activate Now
+            </button>
+
+            <div class="text-center mt-4">
+                <p class="text-[11px] text-velora-mutedGray flex items-center justify-center gap-1.5">
+                    <i class="fas fa-check-circle text-emerald-600"></i> Supports Bank Transfer, USSD & Cards
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-6 text-center text-[10px] text-velora-mutedGray border-t border-purple-900/5 bg-white/40">
+        <p>🔒 256-bit Encrypted Checkout • Powered by GTBank Squad Gateway</p>
+    </footer>
 
     <script>
-        const COACH_PHONE = "2348130375700";
+        // CONFIGURATION
+        const COACH_PHONE = "2348130375700"; // Your WhatsApp Number
+        const SQUAD_PUBLIC_KEY = "pk_ea0f01996998fb685b12c602629a66a11b5726a0"; // Your Squad Live Key
 
+        // Pricing Matrix matching your register.html values
+        const pricing = {
+            NG: { platinum: { amount: 9000, display: "₦9,000", currency: "NGN" }, gold: { amount: 14500, display: "₦14,500", currency: "NGN" } },
+            GH: { platinum: { amount: 170, display: "170 GHS", currency: "GHS" }, gold: { amount: 250, display: "250 GHS", currency: "GHS" } },
+            CM: { platinum: { amount: 7500, display: "7,500 XAF", currency: "XAF" }, gold: { amount: 12000, display: "12,000 XAF", currency: "XAF" } },
+            ZA: { platinum: { amount: 200, display: "200 ZAR", currency: "ZAR" }, gold: { amount: 320, display: "320 ZAR", currency: "ZAR" } }
+        };
+
+        // Extract parameters from URL sent by register.html
         const params = new URLSearchParams(window.location.search);
-        const country = params.get('country') || 'NG';
-        const plan = params.get('plan') || '';
-        const username = params.get('user') || 'User';
-        const userEmail = params.get('email') || '';
+        const countryParam = params.get('country') || 'NG';
+        const planParam = (params.get('plan') || 'gold').toLowerCase();
+        const userParam = params.get('user') || 'Member';
+        const emailParam = params.get('email') || 'customer@gmail.com';
 
-        let displayPrice = "₦0.00";
-        let finalPlanName = plan.toLowerCase() === 'gold' ? 'Gold Plan' : 'Platinum Plan';
+        // Retrieve price info
+        const countryData = pricing[countryParam] || pricing.NG;
+        const selectedPrice = countryData[planParam] || countryData.gold;
 
-        if (country === 'GH') {
-            document.getElementById('ghanaSection').classList.remove('hidden');
-            displayPrice = plan.toLowerCase() === 'gold' ? '250 GHS' : '170 GHS';
-        } else if (country === 'NG') {
-            document.getElementById('nigeriaSection').classList.remove('hidden');
-            displayPrice = plan.toLowerCase() === 'gold' ? '₦14,500' : '₦9,000';
-        } else {
-            document.getElementById('otherCountrySection').classList.remove('hidden');
-            displayPrice = "Contact Support";
-        }
+        // Display summary on screen
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('displayUser').innerText = userParam;
+            document.getElementById('displayEmail').innerText = emailParam;
+            document.getElementById('displayPlan').innerText = `${planParam} Tier`;
+            document.getElementById('displayAmount').innerText = selectedPrice.display;
+        });
 
-        document.getElementById('displayPlanName').innerText = finalPlanName;
-        document.getElementById('displayPlanPrice').innerText = displayPrice;
-        document.getElementById('displayUsername').innerText = username;
-        document.getElementById('displayEmail').innerText = userEmail || "Not Provided";
+        function payWithSquad() {
+            const amountInKobo = selectedPrice.amount * 100; // Squad expects amount in minor units (kobo)
 
-        function sendManualProof(region) {
-            let msg = "";
-            if (region === 'Nigeria') {
-                msg = `Hello Coach CHI 👋\n\nI just transferred ${displayPrice} via Direct Bank Transfer for VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nI have attached my payment transfer proof below for activation.`;
-            } else if (region === 'Ghana') {
-                msg = `Hello Coach CHI 👋\n\nI just transferred ${displayPrice} via MTN MoMo for VELORA!\n\n🔹 Username: ${username}\n🔹 Email: ${userEmail}\n🔹 Plan: ${finalPlanName}\n\nI have attached my payment slip/sender name below for confirmation.`;
-            } else {
-                msg = `Hello Coach CHI 👋\n\nI am registering from ${country} for the ${finalPlanName} (${username} / ${userEmail}). Please assist me with local payment options!`;
-            }
+            const squadInstance = new squad({
+                onClose: () => {
+                    alert("Payment cancelled. Please complete payment to activate your VELORA account.");
+                },
+                key: SQUAD_PUBLIC_KEY,
+                email: emailParam,
+                amount: amountInKobo,
+                currency_code: selectedPrice.currency,
+                onSuccess: (response) => {
+                    const transactionRef = response.reference || response.transaction_ref;
+                    
+                    // Construct WhatsApp message
+                    const msg = `Hello 👋\n\nI have successfully paid for my VELORA account!\n\n👤 Username: ${userParam}\n📧 Email: ${emailParam}\n📦 Tier: ${planParam.toUpperCase()} Plan (${selectedPrice.display})\n🧾 Ref ID: ${transactionRef}\n\nPlease activate my profile immediately!`;
 
-            window.location.href = `https://wa.me/${COACH_PHONE}?text=${encodeURIComponent(msg)}`;
-        }
-
-        /* Interactive 3D Card Hover Effect */
-        const card = document.getElementById('tiltCard');
-        const wrapper = document.querySelector('.card-wrapper');
-
-        if (wrapper && card) {
-            wrapper.addEventListener('mousemove', (e) => {
-                const rect = wrapper.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-
-                const rotateX = (-y / rect.height) * 15;
-                const rotateY = (x / rect.width) * 15;
-
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    // Redirect to WhatsApp
+                    window.location.href = `https://wa.me/${COACH_PHONE}?text=${encodeURIComponent(msg)}`;
+                }
             });
 
-            wrapper.addEventListener('mouseleave', () => {
-                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-            });
+            squadInstance.setup();
+            squadInstance.open();
         }
     </script>
 </body>

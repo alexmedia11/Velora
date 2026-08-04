@@ -172,6 +172,8 @@
     </footer>
 
     <script>
+        const MY_WHATSAPP = "2348130375700";
+
         const plansByCountry = {
             NG: [
                 { value: 'platinum', text: 'Velora Platinum Plan — ₦9,000' },
@@ -276,9 +278,22 @@
             const country = document.getElementById('country').value;
             const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
-            const plan = document.getElementById('tierPlan').value;
+            const planSelect = document.getElementById('tierPlan');
+            const planText = planSelect.options[planSelect.selectedIndex].text;
 
-            window.location.href = `payment.html?country=${encodeURIComponent(country)}&plan=${encodeURIComponent(plan)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
+            // NIGERIA: Go to Squad Payment Gateway
+            if (country === 'NG') {
+                window.location.href = `payment.html?country=${encodeURIComponent(country)}&plan=${encodeURIComponent(planSelect.value)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
+            } 
+            // OTHER COUNTRIES: Direct to WhatsApp
+            else {
+                const countryNames = { GH: 'Ghana 🇬🇭', CM: 'Cameroon 🇨🇲', ZA: 'South Africa 🇿🇦' };
+                const selectedCountryName = countryNames[country] || country;
+
+                const msg = `Hello 👋\n\nI want to register for VELORA from ${selectedCountryName}!\n\n👤 Username: ${username}\n📧 Email: ${email}\n📦 Selected Package: ${planText}\n\nPlease guide me on how to make my payment!`;
+
+                window.location.href = `https://wa.me/${MY_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+            }
         }
     </script>
 </body>

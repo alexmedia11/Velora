@@ -566,7 +566,7 @@
         <img id="lightboxImg" src="" alt="Full preview" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl">
     </div>
 
-    <!-- Interactive 3D Canvas Script & 30 Dynamic Notifications -->
+    <!-- Enhanced Interactive 3D Canvas Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         let currentCurrency = 'NGN';
@@ -622,141 +622,7 @@
             }
         }
 
-        // Proof Screenshot Upload Handling
-        function previewProofImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('proofPreviewImg').src = e.target.result;
-                    document.getElementById('uploadPlaceholder').classList.add('hidden');
-                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeProofImage() {
-            document.getElementById('proofFileInput').value = '';
-            document.getElementById('proofPreviewImg').src = '';
-            document.getElementById('uploadPlaceholder').classList.remove('hidden');
-            document.getElementById('imagePreviewContainer').classList.add('hidden');
-        }
-
-        function submitProofNotice() {
-            const fileInput = document.getElementById('proofFileInput');
-            if(!fileInput.files.length) {
-                alert('Please select a payment screenshot image first.');
-                return;
-            }
-            alert('Thank you! Your proof screenshot has been uploaded and queued for verification.');
-            removeProofImage();
-        }
-
-        // Live Withdrawal Activity List (Recalibrated for ₦2,000 = $1 USD baseline)
-const samplePayouts = [
-    { name: "Chinedu O.", country: "🇳🇬 Nigeria", ngn: "135,000", usd: "67.50", type: "YouTube Watch Rewards" },
-    { name: "Blessing A.", country: "🇳🇬 Nigeria", ngn: "572,000", usd: "286.00", type: "Gold Pro Bot Automation" },
-    { name: "Kwame M.", country: "🇬🇭 Ghana", ngn: "28,000", usd: "14.00", type: "AI Upload Rewards" },
-    { name: "Sipho D.", country: "🇿🇦 South Africa", ngn: "94,500", usd: "47.25", type: "Football Prediction Pool" },
-    { name: "Amara K.", country: "🇳🇬 Nigeria", ngn: "231,800", usd: "115.90", type: "Platinum Daily Task" }
-];
-
-        function renderWithdrawalList() {
-            const container = document.getElementById('live-withdrawal-list');
-            if(!container) return;
-            container.innerHTML = '';
-
-            samplePayouts.forEach(item => {
-                const val = (currentCurrency === 'USD') ? `$${item.usd}` : `₦${item.ngn}`;
-                const html = `
-                    <div class="flex items-center justify-between p-3 rounded-2xl bg-purple-50/40 border border-purple-100 hover:bg-purple-50 transition">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-velora-purple/10 text-velora-purple font-bold flex items-center justify-center text-xs">
-                                ${item.name.substring(0, 2)}
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-velora-deep">${item.name} <span class="text-[10px] text-gray-400 font-normal">${item.country}</span></h4>
-                                <p class="text-[10px] text-gray-500">${item.type}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs font-extrabold text-emerald-600 block">+${val}</span>
-                            <span class="text-[9px] text-gray-400">Verified Paid</span>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
-        }
-
-        // Corrected USD values based on your platform's ~$0.50 per ₦1,000 rate (or ~$500/₦1m equivalent used in your pricing table)
-const livePopupsList = [
-    { name: "Fatima B.", title: "Gold Pro Bot Executed", ngn: "108,000", usd: "54.00", engine: "Automated Bot Task" },
-    { name: "Emmanuel T.", title: "Instant Withdrawal", ngn: "356,500", usd: "178.25", engine: "Bank Transfer" },
-    { name: "Chisom E.", title: "YouTube Reward", ngn: "24,000", usd: "12.00", engine: "Video Watch Engine" },
-    { name: "Kofi Mensah", title: "Cashback Received", ngn: "12,000", usd: "6.00", engine: "Gold Sign-up Bonus" },
-    { name: "Blessing U.", title: "AI Book Reward", ngn: "5,000", usd: "2.50", engine: "AI Distribution" },
-    { name: "David O.", title: "Match Prediction Win", ngn: "8,000", usd: "4.00", engine: "Sports Prediction Pool" },
-    { name: "Sandra A.", title: "Instant Withdrawal", ngn: "405,000", usd: "202.50", engine: "Bank Transfer" },
-    { name: "Tunde W.", title: "Platinum Daily Task", ngn: "3,500", usd: "1.75", engine: "AI Upload Engine" },
-    { name: "Grace K.", title: "Gold Pro Bot Executed", ngn: "252,000", usd: "126.00", engine: "Automated Bot Task" },
-    { name: "Yusuf M.", title: "Spillover Bonus", ngn: "8,000", usd: "4.00", engine: "Network Allocation" },
-    { name: "Sipho N.", title: "YouTube Reward", ngn: "16,500", usd: "8.25", engine: "Video Watch Engine" },
-    { name: "Amina I.", title: "Instant Withdrawal", ngn: "98,000", usd: "49.00", engine: "Crypto USDT Transfer" },
-    { name: "Kelechi P.", title: "Welcome Bonus", ngn: "8,000", usd: "4.00", engine: "Platinum Plan Bonus" },
-    { name: "Njabulo M.", title: "Instant Withdrawal", ngn: "50,000", usd: "25.00", engine: "Bank Payout" },
-    { name: "Rita O.", title: "YouTube Engine Reward", ngn: "20,000", usd: "10.00", engine: "Media Engine" },
-    { name: "Tariq A.", title: "Gold Pro Bot Executed", ngn: "124,500", usd: "62.25", engine: "Automated Execution" },
-    { name: "Mercy J.", title: "AI Content Payout", ngn: "8,000", usd: "4.00", engine: "AI Lucky Book" },
-    { name: "Abubakar S.", title: "Instant Withdrawal", ngn: "39,000", usd: "19.50", engine: "Bank Transfer" },
-    { name: "Precious E.", title: "Snapchat Task Reward", ngn: "1,000", usd: "0.50", engine: "Social Task Engine" },
-    { name: "Thabo K.", title: "Instant Withdrawal", ngn: "42,000", usd: "21.00", engine: "Bank Payout" },
-    { name: "Vivian N.", title: "Gold Pro Bot Executed", ngn: "286,500", usd: "143.25", engine: "Automated Daily" },
-    { name: "Daniel K.", title: "YouTube Watch Reward", ngn: "10,000", usd: "5.00", engine: "Video Watch Engine" },
-    { name: "Halima B.", title: "Instant Withdrawal", ngn: "119,000", usd: "59.50", engine: "Bank Transfer" },
-    { name: "Solomon F.", title: "Match Prediction Win", ngn: "8,000", usd: "4.00", engine: "Sports Prediction" },
-    { name: "Zainab U.", title: "Cashback Received", ngn: "12,000", usd: "6.00", engine: "Gold Package Bonus" },
-    { name: "Ibrahim G.", title: "Instant Withdrawal", ngn: "615,000", usd: "307.50", engine: "Bank Transfer" },
-    { name: "Joy C.", title: "Gold Pro Bot Executed", ngn: "67,500", usd: "33.75", engine: "Automated Bot Task" },
-    { name: "Gideon K.", title: "YouTube Reward", ngn: "15,000", usd: "7.50", engine: "Media Engine" },
-    { name: "Florence M.", title: "AI Content Payout", ngn: "5,000", usd: "2.50", engine: "AI Upload Engine" },
-    { name: "Prince O.", title: "Instant Withdrawal", ngn: "387,000", usd: "193.50", engine: "Bank Transfer" }
-];
-
-let popupIndex = 0;
-
-function triggerLiveToast() {
-    const toast = document.getElementById('live-toast');
-    if(!toast) return;
-
-    const currentItem = livePopupsList[popupIndex];
-    popupIndex = (popupIndex + 1) % livePopupsList.length;
-
-    // Checks current global currency selection dynamically
-    const amount = (currentCurrency === 'USD') ? `$${currentItem.usd}` : `₦${currentItem.ngn}`;
-
-    document.getElementById('toast-avatar').innerText = currentItem.name.split(' ').map(n=>n[0]).join('');
-    document.getElementById('toast-title').innerText = `${currentItem.name} • ${currentItem.title}`;
-    document.getElementById('toast-desc').innerText = `Received ${amount} via ${currentItem.engine}`;
-
-    toast.classList.remove('toast-hidden');
-    toast.classList.add('toast-visible');
-
-    setTimeout(() => {
-        closeLiveToast();
-    }, 4500);
-}
-
-        function closeLiveToast() {
-            const toast = document.getElementById('live-toast');
-            if(toast) {
-                toast.classList.remove('toast-visible');
-                toast.classList.add('toast-hidden');
-            }
-        }
-
-        // Three.js Interactive 3D Canvas
+        // --- Interactive 3D Three.js Animation ---
         let scene, camera, renderer, torusKnot, particleSystem;
         let mouseX = 0, mouseY = 0;
 
@@ -829,12 +695,7 @@ function triggerLiveToast() {
             animate();
         }
 
-        window.onload = () => { 
-            init3D(); 
-            renderWithdrawalList();
-            setTimeout(triggerLiveToast, 2000); // Initial popup after 2 sec
-            setInterval(triggerLiveToast, 7500); // Trigger a new popup every 7.5 seconds
-        };
+        window.onload = () => { init3D(); };
     </script>
 </body>
 </html>
