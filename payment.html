@@ -146,6 +146,7 @@
                 },
                 key: SQUAD_PUBLIC_KEY,
                 email: emailParam,
+                customer_name: userParam, // Passes customer name cleanly to Squad
                 amount: amountInKobo,
                 currency_code: selectedPrice.currency,
                 onSuccess: (response) => {
