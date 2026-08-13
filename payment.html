@@ -73,6 +73,10 @@
                     <span id="displayEmail" class="font-bold text-velora-navyDeep truncate max-w-[180px]">Loading...</span>
                 </div>
                 <div class="flex justify-between items-center text-xs pb-2 border-b border-purple-900/5">
+                    <span class="text-velora-mutedGray">Phone Number:</span>
+                    <span id="displayPhone" class="font-bold text-velora-navyDeep">Loading...</span>
+                </div>
+                <div class="flex justify-between items-center text-xs pb-2 border-b border-purple-900/5">
                     <span class="text-velora-mutedGray">Selected Tier:</span>
                     <span id="displayPlan" class="font-bold text-velora-purpleAccent uppercase">Loading...</span>
                 </div>
@@ -124,6 +128,7 @@
         const planParam = (params.get('plan') || 'gold').toLowerCase();
         const userParam = params.get('user') || 'Member';
         const emailParam = params.get('email') || 'customer@gmail.com';
+        const phoneParam = params.get('phone') || '';
 
         // Retrieve price info
         const countryData = pricing[countryParam] || pricing.NG;
@@ -133,6 +138,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('displayUser').innerText = userParam;
             document.getElementById('displayEmail').innerText = emailParam;
+            document.getElementById('displayPhone').innerText = phoneParam || 'Not Provided';
             document.getElementById('displayPlan').innerText = `${planParam} Tier`;
             document.getElementById('displayAmount').innerText = selectedPrice.display;
         });
@@ -147,13 +153,14 @@
                 key: SQUAD_PUBLIC_KEY,
                 email: emailParam,
                 customer_name: userParam, // Passes customer name cleanly to Squad
+                phone_number: phoneParam, // Passes customer phone number directly to Squad dashboard
                 amount: amountInKobo,
                 currency_code: selectedPrice.currency,
                 onSuccess: (response) => {
                     const transactionRef = response.reference || response.transaction_ref;
                     
                     // Construct WhatsApp message
-                    const msg = `Hello 👋\n\nI have successfully paid for my VELORA account!\n\n👤 Username: ${userParam}\n📧 Email: ${emailParam}\n📦 Tier: ${planParam.toUpperCase()} Plan (${selectedPrice.display})\n🧾 Ref ID: ${transactionRef}\n\nPlease activate my profile immediately!`;
+                    const msg = `Hello 👋\n\nI have successfully paid for my VELORA account!\n\n👤 Username: ${userParam}\n📧 Email: ${emailParam}\n📞 Phone: ${phoneParam}\n📦 Tier: ${planParam.toUpperCase()} Plan (${selectedPrice.display})\n🧾 Ref ID: ${transactionRef}\n\nPlease activate my profile immediately!`;
 
                     // Redirect to WhatsApp
                     window.location.href = `https://wa.me/${COACH_PHONE}?text=${encodeURIComponent(msg)}`;

@@ -146,6 +146,15 @@
                     </div>
                 </div>
 
+                <!-- Mandatory Phone Input -->
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Phone / WhatsApp Number</label>
+                    <div class="relative">
+                        <i class="fas fa-phone absolute left-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs"></i>
+                        <input type="tel" id="phone" required placeholder="08012345678" class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-4 text-sm text-velora-navyDeep placeholder-velora-mutedGray/50 focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent transition">
+                    </div>
+                </div>
+
                 <!-- Dynamic Plan Selection -->
                 <div>
                     <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Select Membership Tier</label>
@@ -278,19 +287,20 @@
             const country = document.getElementById('country').value;
             const username = document.getElementById('username').value.trim();
             const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             const planSelect = document.getElementById('tierPlan');
             const planText = planSelect.options[planSelect.selectedIndex].text;
 
-            // NIGERIA: Go to Squad Payment Gateway
+            // NIGERIA: Go to Squad Payment Gateway with phone
             if (country === 'NG') {
-                window.location.href = `payment.html?country=${encodeURIComponent(country)}&plan=${encodeURIComponent(planSelect.value)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
+                window.location.href = `payment.html?country=${encodeURIComponent(country)}&plan=${encodeURIComponent(planSelect.value)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
             } 
-            // OTHER COUNTRIES: Direct to WhatsApp
+            // OTHER COUNTRIES: Direct to WhatsApp with phone included
             else {
                 const countryNames = { GH: 'Ghana 🇬🇭', CM: 'Cameroon 🇨🇲', ZA: 'South Africa 🇿🇦' };
                 const selectedCountryName = countryNames[country] || country;
 
-                const msg = `Hello 👋\n\nI want to register for VELORA from ${selectedCountryName}!\n\n👤 Username: ${username}\n📧 Email: ${email}\n📦 Selected Package: ${planText}\n\nPlease guide me on how to make my payment!`;
+                const msg = `Hello 👋\n\nI want to register for VELORA from ${selectedCountryName}!\n\n👤 Username: ${username}\n📧 Email: ${email}\n📞 Phone: ${phone}\n📦 Selected Package: ${planText}\n\nPlease guide me on how to make my payment!`;
 
                 window.location.href = `https://wa.me/${MY_WHATSAPP}?text=${encodeURIComponent(msg)}`;
             }
