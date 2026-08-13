@@ -128,7 +128,12 @@
         const planParam = (params.get('plan') || 'gold').toLowerCase();
         const userParam = params.get('user') || 'Member';
         const emailParam = params.get('email') || 'customer@gmail.com';
-        const phoneParam = params.get('phone') || '';
+        
+        // Ensure phone param is formatted and never empty
+        let phoneParam = params.get('phone') || '';
+        if (!phoneParam) {
+            phoneParam = "08000000000"; // Default placeholder if blank so Squad SDK doesn't throw an error
+        }
 
         // Retrieve price info
         const countryData = pricing[countryParam] || pricing.NG;
@@ -138,13 +143,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('displayUser').innerText = userParam;
             document.getElementById('displayEmail').innerText = emailParam;
-            document.getElementById('displayPhone').innerText = phoneParam || 'Not Provided';
+            document.getElementById('displayPhone').innerText = phoneParam;
             document.getElementById('displayPlan').innerText = `${planParam} Tier`;
             document.getElementById('displayAmount').innerText = selectedPrice.display;
         });
 
         function payWithSquad() {
-            const amountInKobo = selectedPrice.amount * 100; // Squad expects amount in minor units (kobo)
+            const amountInKobo = selectedPrice.amount * 100; // Squad expects kobo
 
             const squadInstance = new squad({
                 onClose: () => {
@@ -156,12 +161,7 @@
                 phone_number: phoneParam,
                 amount: amountInKobo,
                 currency_code: selectedPrice.currency,
-                
-                // Forces Squad Dashboard to display the customer phone number
-                pass_charge: {
-                    phone_number: phoneParam,
-                    customer_phone: phoneParam
-                },
+                pass_charge: false, // Must be true/false only
                 metadata: {
                     phone_number: phoneParam,
                     username: userParam
