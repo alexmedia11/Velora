@@ -146,12 +146,12 @@
                     </div>
                 </div>
 
-                <!-- Mandatory Phone Input -->
+                <!-- Phone Input (Added) -->
                 <div>
-                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Phone / WhatsApp Number</label>
+                    <label class="block text-xs uppercase tracking-wider text-velora-mutedGray font-bold mb-2">Phone Number</label>
                     <div class="relative">
                         <i class="fas fa-phone absolute left-4 top-1/2 transform -translate-y-1/2 text-velora-mutedGray/60 text-xs"></i>
-                        <input type="tel" id="phone" required placeholder="08012345678" class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-4 text-sm text-velora-navyDeep placeholder-velora-mutedGray/50 focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent transition">
+                        <input type="tel" id="phone" required placeholder="e.g. 08123456789" class="w-full bg-velora-bgCream border border-purple-900/10 rounded-xl py-3 pl-10 pr-4 text-sm text-velora-navyDeep placeholder-velora-mutedGray/50 focus:outline-none focus:border-velora-purpleAccent focus:ring-1 focus:ring-velora-purpleAccent transition">
                     </div>
                 </div>
 
@@ -291,11 +291,11 @@
             const planSelect = document.getElementById('tierPlan');
             const planText = planSelect.options[planSelect.selectedIndex].text;
 
-            // NIGERIA: Go to Squad Payment Gateway with phone
+            // NIGERIA: Go to Squad Payment Gateway
             if (country === 'NG') {
                 window.location.href = `payment.html?country=${encodeURIComponent(country)}&plan=${encodeURIComponent(planSelect.value)}&user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
             } 
-            // OTHER COUNTRIES: Direct to WhatsApp with phone included
+            // OTHER COUNTRIES: Direct to WhatsApp
             else {
                 const countryNames = { GH: 'Ghana 🇬🇭', CM: 'Cameroon 🇨🇲', ZA: 'South Africa 🇿🇦' };
                 const selectedCountryName = countryNames[country] || country;

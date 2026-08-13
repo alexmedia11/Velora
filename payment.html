@@ -152,10 +152,21 @@
                 },
                 key: SQUAD_PUBLIC_KEY,
                 email: emailParam,
-                customer_name: userParam, // Passes customer name cleanly to Squad
-                phone_number: phoneParam, // Passes customer phone number directly to Squad dashboard
+                customer_name: userParam,
+                phone_number: phoneParam,
                 amount: amountInKobo,
                 currency_code: selectedPrice.currency,
+                
+                // Forces Squad Dashboard to display the customer phone number
+                pass_charge: {
+                    phone_number: phoneParam,
+                    customer_phone: phoneParam
+                },
+                metadata: {
+                    phone_number: phoneParam,
+                    username: userParam
+                },
+
                 onSuccess: (response) => {
                     const transactionRef = response.reference || response.transaction_ref;
                     
