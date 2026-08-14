@@ -41,9 +41,44 @@
             border: 1px solid rgba(74, 20, 140, 0.08);
             box-shadow: 0 20px 40px rgba(10, 17, 40, 0.04);
         }
+        /* Modal Backdrop Fade In */
+        .modal-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-velora-bgCream">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between bg-velora-bgCream relative">
+
+    <!-- ATTENTION POPUP MODAL -->
+    <div id="noticeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="luxury-card modal-fade-in max-w-sm w-full rounded-3xl p-6 text-center shadow-2xl relative border border-velora-purpleAccent/20">
+            
+            <div class="w-12 h-12 bg-amber-500/10 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
+                <i class="fas fa-exclamation-triangle text-xl"></i>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-velora-navyDeep tracking-tight mb-2">Important Instructions!</h3>
+            
+            <div class="text-xs text-velora-navyText/80 space-y-3 text-left bg-amber-500/5 p-4 rounded-2xl border border-amber-500/10 mb-5 leading-relaxed">
+                <p class="flex items-start gap-2">
+                    <i class="fas fa-envelope text-velora-purpleAccent mt-0.5 flex-shrink-0"></i>
+                    <span><strong>Check Your Email:</strong> Immediately after payment, check your email inbox (and spam folder) for your activation link and login details.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i class="fab fa-whatsapp text-emerald-600 mt-0.5 flex-shrink-0 text-sm"></i>
+                    <span><strong>Active WhatsApp Number:</strong> Ensure the phone number you provided is active on WhatsApp so support can assist you instantly.</span>
+                </p>
+            </div>
+
+            <button onclick="closeNoticeModal()" class="w-full bg-velora-purpleAccent hover:bg-velora-purpleHover text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg shadow-velora-purpleAccent/20">
+                I Understand & Wish to Continue
+            </button>
+        </div>
+    </div>
 
     <header class="w-full py-6 px-6 border-b border-purple-900/10 bg-white/60 backdrop-blur-md flex justify-between items-center">
         <a href="index.html" class="text-2xl font-extrabold text-velora-navyDeep tracking-tight">V<span class="text-velora-purpleAccent">e</span>lora</a>
@@ -86,10 +121,10 @@
                 </div>
             </div>
 
-            <!-- Ready to Pay Message Box -->
+            <!-- Notice Callout Box -->
             <div class="bg-purple-900/5 border border-velora-purpleAccent/20 rounded-2xl p-4 mb-6 text-center">
                 <p class="text-xs text-velora-navyText font-medium leading-relaxed">
-                    💬 Click button below when ready only.
+                    💬 Click button below when ready. Your access instructions will be sent to your email after payment.
                 </p>
             </div>
 
@@ -129,10 +164,9 @@
         const userParam = params.get('user') || 'Member';
         const emailParam = params.get('email') || 'customer@gmail.com';
         
-        // Ensure phone param is formatted and never empty
         let phoneParam = params.get('phone') || '';
         if (!phoneParam) {
-            phoneParam = "08000000000"; // Default placeholder if blank so Squad SDK doesn't throw an error
+            phoneParam = "08000000000"; // Fallback dummy to prevent Squad SDK errors
         }
 
         // Retrieve price info
@@ -148,8 +182,13 @@
             document.getElementById('displayAmount').innerText = selectedPrice.display;
         });
 
+        // Function to dismiss modal
+        function closeNoticeModal() {
+            document.getElementById('noticeModal').classList.add('hidden');
+        }
+
         function payWithSquad() {
-            const amountInKobo = selectedPrice.amount * 100; // Squad expects kobo
+            const amountInKobo = selectedPrice.amount * 100; // Squad expects minor units
 
             const squadInstance = new squad({
                 onClose: () => {
@@ -161,7 +200,7 @@
                 phone_number: phoneParam,
                 amount: amountInKobo,
                 currency_code: selectedPrice.currency,
-                pass_charge: false, // Must be true/false only
+                pass_charge: false,
                 metadata: {
                     phone_number: phoneParam,
                     username: userParam
