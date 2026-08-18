@@ -105,7 +105,7 @@
             transform: scale(1.02);
         }
 
-        /* Live Toast Notification Styles - Slide in from Bottom-Left */
+        /* Live Toast Notification Styles - Bottom Left */
         #live-toast {
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
@@ -136,45 +136,9 @@
         .hamburger-circle-btn:hover {
             background-color: #E9D5FF;
         }
-
-        /* Modal Animation */
-        .modal-fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
     </style>
 </head>
 <body class="font-sans antialiased">
-
-    <!-- WITHDRAWAL POLICY MODAL POPUP -->
-    <div id="withdrawalNoticeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="premium-card modal-fade-in max-w-sm w-full rounded-3xl p-6 text-center shadow-2xl relative border-2 border-velora-bright">
-            
-            <div class="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
-                <i class="fas fa-wallet text-2xl"></i>
-            </div>
-
-            <h3 class="text-xl font-extrabold text-velora-deep tracking-tight mb-2">Withdrawal Notice</h3>
-            
-            <div class="text-xs text-gray-700 space-y-3 text-left bg-amber-500/5 p-4 rounded-2xl border border-amber-500/10 mb-5 leading-relaxed">
-                <p class="flex items-start gap-2">
-                    <i class="fas fa-info-circle text-velora-bright mt-0.5 flex-shrink-0"></i>
-                    <span><strong>Minimum Limit:</strong> Please note that all bank and crypto withdrawal requests are processed from <strong class="text-velora-purple">₦100,000 ($50.00)</strong> upwards.</span>
-                </p>
-                <p class="flex items-start gap-2">
-                    <i class="fas fa-bolt text-emerald-600 mt-0.5 flex-shrink-0"></i>
-                    <span><strong>Instant Processing:</strong> Once your total earnings reach ₦100,000, daily payout processing operates automatically.</span>
-                </p>
-            </div>
-
-            <button onclick="closeWithdrawalModal()" class="w-full bg-velora-purple hover:bg-velora-bright text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg">
-                Understood & Continue
-            </button>
-        </div>
-    </div>
 
     <!-- 3D Canvas Background -->
     <canvas id="webgl-canvas"></canvas>
@@ -655,7 +619,7 @@
 
     </div>
 
-    <!-- REPOSITIONED LIVE POPUP NOTIFICATION (BOTTOM-LEFT) WITH LOANS & WITHDRAWALS -->
+    <!-- LIVE POPUP NOTIFICATION (BOTTOM-LEFT) -->
     <div id="live-toast" class="fixed bottom-6 left-6 z-50 max-w-xs md:max-w-sm toast-hidden">
         <div class="bg-white/95 backdrop-blur-md border border-purple-200 p-3.5 rounded-2xl shadow-2xl flex items-center space-x-3">
             <div id="toast-avatar" class="w-10 h-10 rounded-full bg-gradient-to-tr from-velora-purple to-velora-bright text-white font-extrabold flex items-center justify-center text-sm shadow shrink-0">
@@ -680,12 +644,12 @@
         <img id="lightboxImg" src="" alt="Full preview" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl">
     </div>
 
-    <!-- Enhanced Interactive 3D Canvas Script & Live Notifications Script -->
+    <!-- Interactive 3D Canvas & Notifications Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         let currentCurrency = 'NGN';
 
-        // --- Live Withdrawal & Loan Activity Generator ---
+        // --- Live Activity Generator ---
         const sampleNames = ['Amina B.', 'Emeka O.', 'Kwame A.', 'Fatima Y.', 'Chidi N.', 'David K.', 'Sipho M.', 'Grace U.', 'Ibrahim M.', 'Blessing E.'];
         const activityTypes = ['withdrawal', 'loan', 'withdrawal', 'loan'];
         
@@ -735,7 +699,7 @@
             list.innerHTML = html;
         }
 
-        // --- Live Toast Loop (Bottom-Left Popups for Loans & Withdrawals) ---
+        // --- Live Toast Loop (Bottom-Left Popups) ---
         let toastIndex = 0;
         function triggerLiveToast() {
             const toast = document.getElementById('live-toast');
@@ -780,10 +744,6 @@
                 toast.classList.remove('toast-visible');
                 toast.classList.add('toast-hidden');
             }
-        }
-
-        function closeWithdrawalModal() {
-            document.getElementById('withdrawalNoticeModal').classList.add('hidden');
         }
 
         function toggleMobileMenu() {
