@@ -136,9 +136,45 @@
         .hamburger-circle-btn:hover {
             background-color: #E9D5FF;
         }
+
+        /* Modal Animation */
+        .modal-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
+
+    <!-- WITHDRAWAL POLICY MODAL POPUP -->
+    <div id="withdrawalNoticeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="premium-card modal-fade-in max-w-sm w-full rounded-3xl p-6 text-center shadow-2xl relative border-2 border-velora-bright">
+            
+            <div class="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
+                <i class="fas fa-wallet text-2xl"></i>
+            </div>
+
+            <h3 class="text-xl font-extrabold text-velora-deep tracking-tight mb-2">Withdrawal Notice</h3>
+            
+            <div class="text-xs text-gray-700 space-y-3 text-left bg-amber-500/5 p-4 rounded-2xl border border-amber-500/10 mb-5 leading-relaxed">
+                <p class="flex items-start gap-2">
+                    <i class="fas fa-info-circle text-velora-bright mt-0.5 flex-shrink-0"></i>
+                    <span><strong>Minimum Limit:</strong> Please note that all bank and crypto withdrawal requests are processed from <strong class="text-velora-purple">₦100,000 ($50.00)</strong> upwards.</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i class="fas fa-bolt text-emerald-600 mt-0.5 flex-shrink-0"></i>
+                    <span><strong>Instant Processing:</strong> Once your total earnings reach ₦100,000, daily payout processing operates automatically.</span>
+                </p>
+            </div>
+
+            <button onclick="closeWithdrawalModal()" class="w-full bg-velora-purple hover:bg-velora-bright text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg">
+                Understood & Continue
+            </button>
+        </div>
+    </div>
 
     <!-- 3D Canvas Background -->
     <canvas id="webgl-canvas"></canvas>
@@ -159,6 +195,7 @@
                     <a href="#features" class="hover:text-velora-bright transition">Earning Engines</a>
                     <a href="#proofs" class="hover:text-velora-bright transition">Live Earnings</a>
                     <a href="#plans" class="hover:text-velora-bright transition">Packages</a>
+                    <a href="#refund-policy" class="hover:text-velora-bright transition">Refund Policy</a>
                     <a href="#support" class="hover:text-velora-bright transition">Support</a>
                     <a href="#faq" class="hover:text-velora-bright transition">FAQ</a>
                 </div>
@@ -186,6 +223,7 @@
                 <a href="#features" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">Earning Engines</a>
                 <a href="#proofs" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">Live Earnings & Proofs</a>
                 <a href="#plans" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">Packages & Tier Benefits</a>
+                <a href="#refund-policy" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">Refund Policy & 72h Guarantee</a>
                 <a href="#support" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">Support & VIP Channels</a>
                 <a href="#faq" onclick="toggleMobileMenu()" class="block text-sm font-bold text-gray-700 hover:text-velora-bright px-3 py-2 rounded-lg hover:bg-purple-50">FAQ</a>
             </div>
@@ -405,7 +443,7 @@
                         <div class="space-y-4 pt-4 border-t border-gray-100">
                             <div class="flex justify-between items-center text-xs font-semibold text-gray-500">
                                 <span>Withdrawals: <strong class="text-emerald-600">Daily</strong></span>
-                                <span>Min Threshold: <strong class="text-velora-purple currency-val" data-ngn="14,000" data-usd="7.00">₦14,000</strong></span>
+                                <span>Min Threshold: <strong class="text-velora-purple">₦100,000 ($50.00)</strong></span>
                             </div>
                             <a href="register.html?plan=platinum" class="w-full block text-center bg-gray-100 hover:bg-velora-purple hover:text-white text-velora-deep font-bold py-3.5 rounded-xl transition duration-200">
                                 Register Platinum Plan
@@ -451,7 +489,7 @@
                         <div class="space-y-4 pt-4 border-t border-gray-100">
                             <div class="flex justify-between items-center text-xs font-semibold text-gray-500">
                                 <span>Withdrawals: <strong class="text-emerald-600">Daily</strong></span>
-                                <span>Min Threshold: <strong class="text-velora-purple currency-val" data-ngn="20,000" data-usd="10.00">₦20,000</strong></span>
+                                <span>Min Threshold: <strong class="text-velora-purple">₦100,000 ($50.00)</strong></span>
                             </div>
                             <a href="register.html?plan=gold" class="w-full block text-center bg-velora-purple text-white font-extrabold py-3.5 rounded-xl transition duration-200 shadow-lg hover:bg-velora-bright">
                                 Register Gold Plan
@@ -459,6 +497,59 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </section>
+
+        <!-- REFUND POLICY & GUARANTEE SECTION -->
+        <section id="refund-policy" class="py-16 px-6 md:px-12 max-w-6xl mx-auto">
+            <div class="premium-card rounded-3xl p-8 border-2 border-purple-200 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="space-y-4 max-w-2xl">
+                        <span class="text-xs font-bold uppercase tracking-widest text-velora-bright bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+                            🛡️ User Protection Policy
+                        </span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-velora-deep">72-Hour Guarantee & Refund Policy Statement</h2>
+                        <p class="text-xs md:text-sm text-gray-600 leading-relaxed">
+                            At VELORA, we strive for instant account activation upon payment verification. However, to protect your funds and ensure complete transparency, we operate under a strict 72-Hour Fulfillment Guarantee.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-purple-50/60 p-3.5 rounded-2xl border border-purple-100">
+                                <h4 class="font-bold text-xs text-velora-deep mb-1 flex items-center">
+                                    <i class="fas fa-history text-velora-bright mr-2"></i> 72-Hour Resolution Window
+                                </h4>
+                                <p class="text-[11px] text-gray-500">If your VELORA account setup or activation is not completed within 72 hours of successful payment confirmation, you are eligible for an immediate, full refund.</p>
+                            </div>
+
+                            <div class="bg-purple-50/60 p-3.5 rounded-2xl border border-purple-100">
+                                <h4 class="font-bold text-xs text-velora-deep mb-1 flex items-center">
+                                    <i class="fas fa-university text-emerald-600 mr-2"></i> Automatic Refund Initiation
+                                </h4>
+                                <p class="text-[11px] text-gray-500">Once a 72-hour delay is verified, the paid amount will be refunded directly back to the original bank account or card used during payment via our payment processor (Squad / GTBank).</p>
+                            </div>
+
+                            <div class="bg-purple-50/60 p-3.5 rounded-2xl border border-purple-100">
+                                <h4 class="font-bold text-xs text-velora-deep mb-1 flex items-center">
+                                    <i class="fas fa-clock text-velora-purple mr-2"></i> Processing Timelines
+                                </h4>
+                                <p class="text-[11px] text-gray-500">While refunds are processed instantly on our end upon approval, local banking networks may take 1 to 3 business days to reflect the funds in your bank account statement.</p>
+                            </div>
+
+                            <div class="bg-purple-50/60 p-3.5 rounded-2xl border border-purple-100">
+                                <h4 class="font-bold text-xs text-velora-deep mb-1 flex items-center">
+                                    <i class="fas fa-exclamation-triangle text-amber-600 mr-2"></i> Exceptions
+                                </h4>
+                                <p class="text-[11px] text-gray-500">Refunds will not apply if the delay is caused by inaccurate registration details provided by the user (e.g., invalid phone numbers, wrong email addresses, or unverified WhatsApp contact).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-auto bg-velora-deep text-white p-6 rounded-2xl text-center flex-shrink-0 space-y-3">
+                        <i class="fas fa-shield-check text-4xl text-emerald-400"></i>
+                        <p class="text-xs font-bold">100% Secure Checkout</p>
+                        <p class="text-[10px] text-gray-400">Powered by Squad (GTBank)</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -528,7 +619,31 @@
                     </button>
                     <div class="max-h-0 overflow-hidden transition-all duration-300 bg-purple-50/30">
                         <p class="p-6 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
-                            <strong>Platinum (₦9,000 / $4.50)</strong> requires manual daily task execution with a ₦14,000 ($7.00) minimum withdrawal. <strong>Gold (₦14,500 / $7.25)</strong> includes automated task bot execution (hands-free daily earning), higher cashback (₦12,000), access to Web Dev / Design courses, and marketplace features.
+                            <strong>Platinum (₦9,000 / $4.50)</strong> requires manual daily task execution. <strong>Gold (₦14,500 / $7.25)</strong> includes automated task bot execution (hands-free daily earning), higher cashback (₦12,000), access to Web Dev / Design courses, and marketplace features.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="premium-card rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-velora-deep">What is the Minimum Withdrawal Amount?</span>
+                        <span class="text-velora-bright transform transition-transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 bg-purple-50/30">
+                        <p class="p-6 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                            Withdrawals are available daily starting from <strong>₦100,000 ($50.00)</strong> upwards across all active membership plans. Once reached, requests are paid directly to your bank account or crypto wallet.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="premium-card rounded-2xl overflow-hidden">
+                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-velora-deep">How does the 72-Hour Refund Guarantee work?</span>
+                        <span class="text-velora-bright transform transition-transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 bg-purple-50/30">
+                        <p class="p-6 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                            At VELORA, we strive for instant account activation upon payment verification. If your account setup or activation is not completed within 72 hours of payment confirmation, an automatic refund is initiated directly back to your original bank account/card via Squad (GTBank). Refunds take 1–3 business days to reflect on bank statements and do not apply if invalid registration details were provided.
                         </p>
                     </div>
                 </div>
@@ -570,6 +685,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         let currentCurrency = 'NGN';
+
+        function closeWithdrawalModal() {
+            document.getElementById('withdrawalNoticeModal').classList.add('hidden');
+        }
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileDropdownMenu');
